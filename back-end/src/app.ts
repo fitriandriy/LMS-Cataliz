@@ -1,36 +1,20 @@
-import express, {
-  Request,
-  Response,
-  NextFunction,
-  ErrorRequestHandler,
-  Application,
-} from "express";
-import { Server } from "http";
-import createHttpError from "http-errors";
-import { config } from "dotenv";
-config();
+import express, { static as ExpressStatic, Express } from "express";
+import Middleware from "@src/middleware/index.js";
+import router from "@src/router.js";
 
-const app: Application = express();
+export async function createApp() {
+  const app: Express = express();
 
-app.get("/", (Request, Response, NextFunction) => {
-  Response.send("Hello worlds");
-});
+  const middleware = new Middleware(app);
+  middleware.registerBeforeRoutes();
 
-app.use((Request, Response, NextFunction) => {
-  NextFunction(new createHttpError.NotFound());
-});
+  // all files inside src/assets folder is accessible to public within /assets path
+  app.use("/assets", ExpressStatic("src/assets"));
 
-const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-  res.status(err.status || 500);
-  res.send({
-    status: err.status || 500,
-    message: err.message,
-  });
-};
+  // all of your endpoint should be inside router
+  app.use("/", router());
 
-app.use(errorHandler);
+  middleware.registerAfterRoutes();
 
-const PORT: Number = Number(process.env.PORT) || 3000;
-const server: Server = app.listen(3000, () => {
-  console.log(`Running at http://localhost:${PORT}`);
-});
+  return app;
+}
