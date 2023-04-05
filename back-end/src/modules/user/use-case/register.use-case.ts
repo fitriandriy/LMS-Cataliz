@@ -14,7 +14,6 @@ export class RegisterUserUseCase {
     try {
       // validate request body
       validate(document);
-
       // save to database
       const userEntity = new UserEntity({
         username: document.username,
@@ -23,9 +22,9 @@ export class RegisterUserUseCase {
         phone_number: document.phone_number,
         role: UserRoleTypes.Student,
         createdAt: new Date(),
+        token: document.token,
       });
       const response = await new RegisterUserRepository(this.db).handle(userEntity, options);
-
 
       return {
         acknowledged: response.acknowledged,

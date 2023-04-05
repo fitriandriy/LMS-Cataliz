@@ -12,6 +12,7 @@ export interface UserEntityInterface {
   phone_number?: string;
   createdAt?: Date;
   updatedAt?: Date;
+  token?: string;
 }
 
 export class UserEntity implements UserEntityInterface {
@@ -23,6 +24,7 @@ export class UserEntity implements UserEntityInterface {
   public phone_number?: string;
   public createdAt?: Date;
   public updatedAt?: Date;
+  public token?: string;
 
   constructor(user: UserEntityInterface) {
     this._id = user._id;
@@ -33,5 +35,7 @@ export class UserEntity implements UserEntityInterface {
     this.phone_number = user.phone_number;
     this.createdAt = user.createdAt;
     this.updatedAt = user.updatedAt;
+    this.token = user.token;
+
   }
 }
