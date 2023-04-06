@@ -10,7 +10,7 @@ export default function () {
    * <modules>/router.ts
    */
   app.use("/v1/examples", exampleRouter);
-  app.use("/auth", authRouter);
+  app.use("/users", authRouter);
 
   return app;
 }
