@@ -1,4 +1,5 @@
 import express, { Express } from "express";
+import courseRouter from "./modules/course/router.js";
 import exampleRouter from "./modules/example/router.js";
 import authRouter from "./modules/user/router.js";
 
@@ -11,6 +12,7 @@ export default function () {
    */
   app.use("/v1/examples", exampleRouter);
   app.use("/users", authRouter);
+  app.use("/courses", courseRouter);
 
   return app;
 }
