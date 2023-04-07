@@ -35,7 +35,7 @@
                 </ol>
                 <button type="submit" class="bg-primaryGreen text-white rounded p-1 my-6">DAFTAR</button>
             </form>
-            <span>Sudah punya akun? <RouterLink :to="{ name: 'login' }"><u class="hover:text-sky-600">Daftar</u></RouterLink></span>
+            <span>Sudah punya akun? <RouterLink :to="{ name: 'login' }"><u class="hover:text-sky-600">Masuk</u></RouterLink></span>
         </div>
     </div>
 </template>

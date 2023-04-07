@@ -35,7 +35,7 @@
                 </div>
                 <div>
                     <h2 class="font-semibold text-lg my-3">Tambahkan Catatan</h2>
-                    <textarea class="rounded-lg border border-[#777777] outline-none" rows="4" cols="50"></textarea>
+                    <textarea class="rounded-lg border border-[#777777] outline-none px-2" rows="4" cols="50"></textarea>
                 </div>
             </div>
             <h2 class="font-semibold text-lg my-3">Masukan Nilai (0-100)</h2>

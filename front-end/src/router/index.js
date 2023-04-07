@@ -1,14 +1,15 @@
 import { createRouter, createWebHistory } from "vue-router";
-// import HomeView from "../views/HomeView.vue";
-// import CityView from "../views/CityView.vue";
-// import LoginView from "../views/LoginView.vue";
-// import SignInView from "../views/SignInView.vue";
 
 const routes = [
   {
       path: '/',
       name: 'home',
       component: () => import('../views/Home.vue')
+  },
+  {
+      path: '/create-course',
+      name: 'create-course',
+      component: () => import('../views/CreateCourse.vue')
   },
   {
       path: '/login',
@@ -26,6 +27,21 @@ const routes = [
       component: () => import('../views/Course.vue')
   },
   {
+      path: '/course/:id/edit',
+      name: 'edit-course',
+      component: () => import('../views/EditCourse.vue')
+  },
+  {
+      path: '/course/:id/section/:sectionId/edit',
+      name: 'edit-section',
+      component: () => import('../views/EditSection.vue')
+  },
+  {
+      path: '/course/:id/create-section',
+      name: 'create-section',
+      component: () => import('../views/CreateSection.vue')
+  },
+  {
       path: '/course/:id/submissions',
       name: 'submission',
       component: () => import('../views/Submission.vue')
@@ -39,6 +55,11 @@ const routes = [
       path: '/course/:id/discussion',
       name: 'discussion',
       component: () => import('../views/ForumDiscussion.vue')
+  },
+  {
+      path: '/course/:id/discussion/:id',
+      name: 'discussion-detile',
+      component: () => import('../views/DetileDiscussion.vue')
   },
 ];
 
