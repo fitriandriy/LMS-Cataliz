@@ -50,8 +50,8 @@ export async function createCollection(db: IDatabaseAdapter) {
       },
     });
 
-    console.info(`[schema] ${collection} - create unique attribute "name"`);
-    await helper.createUnique(collection, "name");
+    console.info(`[schema] ${collection} - create unique attribute "title"`);
+    await helper.createUnique(collection, "title");
   } catch (error) {
     throw error;
   }
