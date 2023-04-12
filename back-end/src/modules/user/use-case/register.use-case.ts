@@ -1,18 +1,9 @@
 import bcrypt from "bcrypt";
+import generateToken from "../../../utils/generateToken.js";
 import { RegisterUserRepository } from "../model/repository/register.repository.js";
 import { UserEntity, UserRoleTypes } from "../model/user.entity.js";
 import { validate } from "../validation/register.validation.js";
 import DatabaseConnection, { CreateOptionsInterface, DocumentInterface } from "@src/database/connection.js";
-
-export const passwordHash = (plainPassword: string): string => {
-  const hash = bcrypt.hashSync(plainPassword, 10);
-  return hash;
-};
-
-export const comparePassword = (plainPassword: string, passwordHash: string): boolean => {
-  const compared = bcrypt.compareSync(plainPassword, passwordHash);
-  return compared;
-};
 
 export class RegisterUserUseCase {
   private db: DatabaseConnection;
@@ -25,17 +16,21 @@ export class RegisterUserUseCase {
     try {
       // validate request body
       validate(document);
-      const hash = passwordHash(document.password);
+
+      const salt = bcrypt.genSaltSync(10);
+      const hash = bcrypt.hashSync(document.password, salt);
+
+      document.password = hash;
 
       // save to database
       const userEntity = new UserEntity({
         username: document.username,
-        password: hash,
+        password: document.password,
         email: document.email,
         phone_number: document.phone_number,
         role: UserRoleTypes.Student,
         createdAt: new Date(),
-        token: document.token,
+        token: generateToken(document._id),
       });
       const response = await new RegisterUserRepository(this.db).handle(userEntity, options);
 
