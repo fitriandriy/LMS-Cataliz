@@ -3,13 +3,13 @@ import Validatorjs from "validatorjs";
 import { DocumentInterface } from "@src/database/connection.js";
 
 // https://github.com/mikeerickson/validatorjs
-export const validate = (document: DocumentInterface) => {
+export const validate = (document: DocumentInterface = {}) => {
   try {
     const validation = new Validatorjs(document, {
-      username: "required",
-      email: "required",
-      password: "required",
-      role: "required",
+      title: "required",
+      thumbnail: "required",
+      description: "required",
+      section: "required",
     });
 
     if (validation.fails()) {

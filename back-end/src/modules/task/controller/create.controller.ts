@@ -1,20 +1,20 @@
 import { NextFunction, Request, Response } from "express";
-import { RegisterUserUseCase } from "../use-case/register.use-case.js";
+import { CreateTaskUseCase } from "../use-case/create.use-case.js";
 import { db } from "@src/database/database.js";
 
-export const registerController = async (req: Request, res: Response, next: NextFunction) => {
+export const createController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const session = db.startSession();
 
     db.startTransaction();
 
-    const registerUserUseCase = new RegisterUserUseCase(db);
-    const token = await registerUserUseCase.handle(req.body, { session });
+    const createTaskUseCase = new CreateTaskUseCase(db);
+    const result = await createTaskUseCase.handle(req.body, { session });
 
     await db.commitTransaction();
 
     res.status(201).json({
-      token
+      _id: result._id,
     });
   } catch (error) {
     await db.abortTransaction();
