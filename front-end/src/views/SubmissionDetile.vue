@@ -1,7 +1,7 @@
 <template>
     <Navigation />
-    <div class="font-Roboto text-[#535353] px-[70px] py-9">
-        <h1 class="font-bold text-2xl text-center">Submission Belajar Fundamental Web Development</h1>
+    <div class="font-Roboto text-[#535353] mx-4 md:mx-[50px] lg:mx-[150px] mt-4 lg:mt-9 mb-2">
+        <h1 class="font-bold text-lg md:text-2xl text-center">Submission Belajar Fundamental Web Development</h1>
         <hr class="border border-[#cccccf] mt-4 mb-4">
         <div class="text-center border border-slate-400 p-3">
             <p class="font-semibold mb-2">Aktivitas Terbaru</p>
@@ -21,7 +21,7 @@
                 <p>Submission : <span class="text-blue-600 underline">Berkas</span></p>
                 <p>Student Note : <span class="text-blue-600">Lorem ipsum dolor sit amet.</span></p>
             </div>
-            <div class="grid grid-cols-2 gap-2 mb-6">
+            <div class="md:grid grid-cols-2 gap-2 mb-6">
                 <div>
                     <h2 class="font-semibold text-lg my-3">Pemenuhan Ketentuan Tugas</h2>
                     <form action="">
@@ -35,7 +35,7 @@
                 </div>
                 <div>
                     <h2 class="font-semibold text-lg my-3">Tambahkan Catatan</h2>
-                    <textarea class="rounded-lg border border-[#777777] outline-none px-2" rows="4" cols="50"></textarea>
+                    <textarea class="rounded-lg border border-[#777777] outline-none px-2" rows="4" cols="40" md:cols="50"></textarea>
                 </div>
             </div>
             <h2 class="font-semibold text-lg my-3">Masukan Nilai (0-100)</h2>

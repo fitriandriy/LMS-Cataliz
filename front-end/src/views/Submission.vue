@@ -1,7 +1,7 @@
 <template>
     <Navigation />
-    <div class="font-Roboto text-[#535353] px-[70px] py-9">
-        <h1 class="font-bold text-2xl">Submission Belajar Fundamental Web Development</h1>
+    <div class="font-Roboto text-[#535353] mx-4 md:mx-[50px] lg:mx-[150px] mt-4 lg:mt-9 mb-2">
+        <h1 class="font-bold text-lg md:text-2xl">Submission Belajar Fundamental Web Development</h1>
         <hr class="border border-[#cccccf] mt-4 mb-8">
         <div class="flex">
             <img class="w-[20px] h-[20px] mr-2" src="/task.png" alt="task icon">
@@ -15,8 +15,8 @@
                 <p class="my-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure facere ut autem beatae exercitationem repellendus ducimus in aliquam voluptates enim? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum iure vitae voluptates ipsam repudiandae soluta saepe excepturi rem quis? Quia?</p>
             </div>
         </div>
-        <hr class="border border-[#cccccf] mt-4 mb-8">
-        <table class="w-full text-center table-auto border-separate border-spacing-2 border border-slate-400">
+        <hr class="border border-[#cccccf] mt-0 mb-2 md:mt-4 md:mb-8">
+        <table class="w-full text-center text-md md:text-base table-auto border-separate border-spacing-0 md:border-spacing-2 border border-slate-400">
             <thead>
                 <tr>
                     <th>Nama</th>
