@@ -25,14 +25,14 @@ export class LoginUserUseCase {
     this.db = db;
   }
 
-  public async handle(username: string, password: string, options?: RetrieveOptionsInterface): Promise<string> {
+  public async handle(username: string, password: string, options?: RetrieveOptionsInterface): Promise<any> {
     try {
       const user = await new LoginUserRepository(this.db).findByUsername(username, options);
-
+      console.log(user);
       if (!user || !compareSync(password, user.password as string)) {
         throw new Error("Invalid username or password");
       }
-      return this.generateToken(user);
+      return { user, token: this.generateToken(user) };
     } catch (error) {
       throw error;
     }

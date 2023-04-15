@@ -31,7 +31,6 @@ export class RegisterUserUseCase {
         phone_number: document.phone_number,
         role: UserRoleTypes.Student,
         createdAt: new Date(),
-        token: generateToken(document._id),
       });
       const response = await new RegisterUserRepository(this.db).handle(userEntity, options);
 
@@ -43,11 +42,11 @@ export class RegisterUserUseCase {
 
   private generateToken(user: UserEntity): string {
     const payload: TokenPayload = { userId: user._id as string,};
-    const token = jwt.sign(payload, "abc123", { expiresIn: "1h" });
+    const token = jwt.sign(payload, process.env.JWT_SECRET as string, { expiresIn: "1h" });
     return token;
   }
 
   static verifyToken(token: string): TokenPayload {
-    return jwt.verify(token, "abc123") as TokenPayload;
+    return jwt.verify(token, process.env.JWT_SECRET as string) as TokenPayload;
   }
 }
