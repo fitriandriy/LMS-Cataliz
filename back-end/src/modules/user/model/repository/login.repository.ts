@@ -18,7 +18,6 @@ export class LoginUserRepository {
       { fields: "", filter: { username }, page: 1, pageSize: 1, sort: "asc" },
       options
     );
-    
     return response.data[0];
   }
 

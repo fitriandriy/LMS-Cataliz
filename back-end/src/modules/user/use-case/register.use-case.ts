@@ -7,6 +7,7 @@ import DatabaseConnection, { CreateOptionsInterface, DocumentInterface } from "@
 
 interface TokenPayload {
   userId: string;
+  userRole: string;
 }
 
 export class RegisterUserUseCase {
@@ -28,7 +29,7 @@ export class RegisterUserUseCase {
         password: hashedPassword,
         email: document.email,
         phone_number: document.phone_number,
-        role: UserRoleTypes.Student,
+        role: document.role,
         createdAt: new Date(),
       });
       const response = await new RegisterUserRepository(this.db).handle(userEntity, options);
@@ -43,7 +44,7 @@ export class RegisterUserUseCase {
   }
 
   private generateToken(user: UserEntity): string {
-    const payload: TokenPayload = { userId: user._id as string,};
+    const payload: TokenPayload = { userId: user._id as string, userRole: user.role as string };
     const token = jwt.sign(payload, process.env.JWT_SECRET as string, { expiresIn: "1h" });
     return token;
   }

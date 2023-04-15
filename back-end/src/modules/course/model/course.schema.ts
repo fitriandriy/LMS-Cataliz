@@ -22,7 +22,7 @@ export async function createCollection(db: IDatabaseAdapter) {
     console.info(`[schema] ${collection} - update schema`);
     await db.updateSchema(collection, {
       bsonType: "object",
-      required: ["title"],
+      required: ["title", "description", "prerequisites"],
       properties: {
         title: {
           bsonType: "string",
@@ -34,7 +34,7 @@ export async function createCollection(db: IDatabaseAdapter) {
         },
         prerequisites: {
           bsonType: "string",
-          description: "The section for the course",
+          description: "The prerequisites for the course",
         },
       },
     });

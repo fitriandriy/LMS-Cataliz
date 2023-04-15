@@ -6,6 +6,7 @@ import DatabaseConnection, { RetrieveOptionsInterface } from "@src/database/conn
 
 interface TokenPayload {
   userId: string;
+  userRole: string;
 }
 
 interface ResponseInterface {
@@ -38,12 +39,12 @@ export class LoginUserUseCase {
   }
 
   private generateToken(user: UserEntity): string {
-    const payload: TokenPayload = { userId: user._id as string };
-    const token = jwt.sign(payload, "abc123", { expiresIn: "1h" });
+    const payload: TokenPayload = { userId: user._id as string, userRole: user.role as string };
+    const token = jwt.sign(payload, process.env.JWT_SECRET as string, { expiresIn: "1h" });
     return token;
   }
 
   static verifyToken(token: string): TokenPayload {
-    return jwt.verify(token, "abc123") as TokenPayload;
+    return jwt.verify(token, process.env.JWT_SECRET as string) as TokenPayload;
   }
 }

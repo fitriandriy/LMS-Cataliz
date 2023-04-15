@@ -9,12 +9,12 @@ export const registerController = async (req: Request, res: Response, next: Next
     db.startTransaction();
 
     const registerUserUseCase = new RegisterUserUseCase(db);
-    const token = await registerUserUseCase.handle(req.body, { session });
+    const data = await registerUserUseCase.handle(req.body, { session });
 
     await db.commitTransaction();
 
     res.status(201).json({
-      token
+      data
     });
   } catch (error) {
     await db.abortTransaction();
