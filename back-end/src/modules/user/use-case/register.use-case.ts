@@ -1,6 +1,5 @@
 import { compareSync, hashSync } from "bcrypt";
 import jwt from "jsonwebtoken";
-import generateToken from "../../../utils/generateToken.js";
 import { RegisterUserRepository } from "../model/repository/register.repository.js";
 import { UserEntity, UserRoleTypes } from "../model/user.entity.js";
 import { validate } from "../validation/register.validation.js";
@@ -34,7 +33,10 @@ export class RegisterUserUseCase {
       });
       const response = await new RegisterUserRepository(this.db).handle(userEntity, options);
 
-      return this.generateToken(response);
+      return {
+        acknowledged: response.acknowledged,
+        _id: response._id,
+      };
     } catch (error) {
       throw error;
     }

@@ -19,7 +19,7 @@ export class CreateCourseUseCase {
       const courseEntity = new CourseEntity({
         title: document.title,
         thumbnail: document.thumbnail,
-        createdBy_id: document.createdBy_id,
+        createdBy_id: document.userId,
         description: document.description,
         prerequisites: document.prerequisites,
         section: document.section,

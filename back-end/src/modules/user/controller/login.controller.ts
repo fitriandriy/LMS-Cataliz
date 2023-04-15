@@ -6,6 +6,7 @@ export const loginController = async (req: Request, res: Response, next: NextFun
   try {
     const loginUserUseCase = new LoginUserUseCase(db);
     const data = await loginUserUseCase.handle(req.body.username, req.body.password);
+    res.cookie("token", data.token, { httpOnly: true });
 
     res.status(201).json({
       user: data.user,

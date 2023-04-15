@@ -28,22 +28,11 @@ export async function createCollection(db: IDatabaseAdapter) {
           bsonType: "string",
           description: "The title for the course",
         },
-        thumbnail: {
-          bsonType: "string",
-          description: "The thumbnail for the course",
-        },
-        createdBy_id: {
-          bsonType: "string",
-        },
         description: {
           bsonType: "string",
           description: "The description for the course",
         },
         prerequisites: {
-          bsonType: "string",
-          description: "The prerequisites for the course",
-        },
-        section: {
           bsonType: "string",
           description: "The section for the course",
         },
