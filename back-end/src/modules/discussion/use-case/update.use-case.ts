@@ -1,10 +1,10 @@
 import { objClean } from "@point-hub/express-utils";
-import { CourseEntity } from "../model/course.entity.js";
-import { UpdateCourseRepository } from "../model/repository/update.repository.js";
+import { DiscussionEntity } from "../model/discussion.entity.js";
+import { UpdateDiscussionRepository } from "../model/repository/update.repository.js";
 import { validate } from "../validation/update.validation.js";
 import DatabaseConnection, { UpdateOptionsInterface, DocumentInterface } from "@src/database/connection.js";
 
-export class UpdateCourseUseCase {
+export class UpdateDiscussionUseCase {
   private db: DatabaseConnection;
 
   constructor(db: DatabaseConnection) {
@@ -17,18 +17,15 @@ export class UpdateCourseUseCase {
       validate(document);
 
       // update database
-      const courseEntity = new CourseEntity({
-        title: document.title,
-        thumbnail: document.thumbnail,
+      const discussionEntity = new DiscussionEntity({
+        comment: document.comment,
+        course_id: document.course_id,
         createdBy_id: document.userId,
-        description: document.description,
-        prerequisites: document.prerequisites,
-        section: document.section,
         updatedAt: new Date(),
       });
 
-      const courseRepository = new UpdateCourseRepository(this.db);
-      await courseRepository.handle(id, objClean(courseEntity), options);
+      const discussionRepository = new UpdateDiscussionRepository(this.db);
+      await discussionRepository.handle(id, objClean(discussionEntity), options);
 
       return {};
     } catch (error) {
