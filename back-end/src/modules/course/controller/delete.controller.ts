@@ -8,6 +8,10 @@ export const deleteController = async (req: Request, res: Response, next: NextFu
 
     db.startTransaction();
 
+    if (req.body.userRole !== "facilitator") {
+      res.sendStatus(403);
+    }
+
     const deleteCourseUseCase = new DeleteCourseUseCase(db);
     await deleteCourseUseCase.handle(req.params.id, { session });
 

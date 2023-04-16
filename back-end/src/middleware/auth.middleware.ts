@@ -13,9 +13,7 @@ export async function authMiddleware(req: Request, res: Response, next: NextFunc
     const payload = RegisterUserUseCase.verifyToken(token);
     req.body.userId = payload.userId;
     req.body.userRole = payload.userRole;
-    if (req.body.userRole !== "facilitator") {
-      res.sendStatus(403);
-    }
+    
     next();
   } catch (error) {
     res.status(401).json({ error: "Invalid token" });

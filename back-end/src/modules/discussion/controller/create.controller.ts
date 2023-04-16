@@ -8,6 +8,8 @@ export const createController = async (req: Request, res: Response, next: NextFu
 
     db.startTransaction();
 
+    
+
     const createDiscussionUseCase = new CreateDiscussionUseCase(db);
     const result = await createDiscussionUseCase.handle(req.body, { session });
 

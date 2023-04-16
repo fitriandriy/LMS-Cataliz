@@ -8,6 +8,10 @@ export const updateController = async (req: Request, res: Response, next: NextFu
 
     db.startTransaction();
 
+    if (req.body.userRole !== "facilitator") {
+      res.sendStatus(403);
+    }
+
     const updateCourseUseCase = new UpdateCourseUseCase(db);
     await updateCourseUseCase.handle(req.params.id, req.body, { session });
 
