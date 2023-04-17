@@ -9,7 +9,7 @@ export class CreateCourseRepository {
   public databaseManager;
 
   constructor(databaseConnection: DatabaseConnection) {
-    this.databaseManager = new DatabaseManager(databaseConnection, "discussions");
+    this.databaseManager = new DatabaseManager(databaseConnection, "courses");
   }
 
   public async handle(document: DocumentInterface, options?: CreateOptionsInterface): Promise<CreateResultInterface> {

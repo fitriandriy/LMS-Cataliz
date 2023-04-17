@@ -1,23 +1,28 @@
 import { compareSync, hashSync } from "bcrypt";
 import jwt from "jsonwebtoken";
-import { RegisterUserRepository } from "../model/repository/register.repository.js";
+import { AuthUserRepository } from "../model/repository/auth.repository.js";
 import { UserEntity, UserRoleTypes } from "../model/user.entity.js";
 import { validate } from "../validation/register.validation.js";
-import DatabaseConnection, { CreateOptionsInterface, DocumentInterface } from "@src/database/connection.js";
+import DatabaseConnection, {
+  CreateOptionsInterface,
+  DocumentInterface,
+  RetrieveOptionsInterface,
+} from "@src/database/connection.js";
 
 interface TokenPayload {
   userId: string;
   userRole: string;
 }
 
-export class RegisterUserUseCase {
+export class AuthUserUseCase {
+  private readonly tokenBlacklist: string[] = [];
   private db: DatabaseConnection;
 
   constructor(db: DatabaseConnection) {
     this.db = db;
   }
 
-  public async handle(document: DocumentInterface, options: CreateOptionsInterface) {
+  public async register(document: DocumentInterface, options: CreateOptionsInterface) {
     try {
       // validate request body
       validate(document);
@@ -32,12 +37,24 @@ export class RegisterUserUseCase {
         role: document.role,
         createdAt: new Date(),
       });
-      const response = await new RegisterUserRepository(this.db).handle(userEntity, options);
+      const response = await new AuthUserRepository(this.db).register(userEntity, options);
 
       return {
         acknowledged: response.acknowledged,
         _id: response._id,
       };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async login(username: string, password: string, options?: RetrieveOptionsInterface): Promise<any> {
+    try {
+      const user = await new AuthUserRepository(this.db).findByUsername(username, options);
+      if (!user || !compareSync(password, user.password as string)) {
+        throw new Error("Invalid username or password");
+      }
+      return { user, token: this.generateToken(user) };
     } catch (error) {
       throw error;
     }
@@ -51,5 +68,13 @@ export class RegisterUserUseCase {
 
   static verifyToken(token: string): TokenPayload {
     return jwt.verify(token, process.env.JWT_SECRET as string) as TokenPayload;
+  }
+
+  invalidateToken(token: string): void {
+    this.tokenBlacklist.push(token);
+  }
+
+  isTokenBlacklisted(token: string): boolean {
+    return this.tokenBlacklist.includes(token);
   }
 }
