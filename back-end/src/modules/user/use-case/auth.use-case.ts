@@ -1,7 +1,7 @@
 import { compareSync, hashSync } from "bcrypt";
 import jwt from "jsonwebtoken";
 import { AuthUserRepository } from "../model/repository/auth.repository.js";
-import { UserEntity, UserRoleTypes } from "../model/user.entity.js";
+import { UserEntity } from "../model/user.entity.js";
 import { validate } from "../validation/register.validation.js";
 import DatabaseConnection, {
   CreateOptionsInterface,
@@ -70,11 +70,11 @@ export class AuthUserUseCase {
     return jwt.verify(token, process.env.JWT_SECRET as string) as TokenPayload;
   }
 
-  invalidateToken(token: string): void {
+  public invalidateToken(token: string): void {
     this.tokenBlacklist.push(token);
   }
 
-  isTokenBlacklisted(token: string): boolean {
+  public isTokenBlacklisted(token: string): boolean {
     return this.tokenBlacklist.includes(token);
   }
 }

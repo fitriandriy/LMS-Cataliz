@@ -8,11 +8,13 @@ export const updateController = async (req: Request, res: Response, next: NextFu
 
     db.startTransaction();
 
-    if (req.body.userRole !== "facilitator") {
-      res.sendStatus(403);
+    const updateCourseUseCase = new UpdateCourseUseCase(db);
+    const response = await updateCourseUseCase.findByUserId(req.body.userId);
+
+    if (req.body.userRole !== "facilitator" || req.body.userId !== response.createdBy_id) {
+      res.status(401).send("Unauthorized");
     }
 
-    const updateCourseUseCase = new UpdateCourseUseCase(db);
     await updateCourseUseCase.handle(req.params.id, req.body, { session });
 
     await db.commitTransaction();

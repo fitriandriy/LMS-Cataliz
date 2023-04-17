@@ -1,25 +1,18 @@
-import {  UserRoleTypes } from "./user.entity.js";
-
+import { hashSync } from "bcrypt";
+import { UserRoleTypes } from "./user.entity.js";
 export const userSeed = [
   {
-    username: "Example Name 1",
+    username: "facil",
     email: "email@gmail.com",
-    password: "password",
+    password: hashSync("password", 10),
     role: UserRoleTypes.Facilitator,
     createdAt: new Date(),
   },
   {
-    username: "Example Name 2",
+    username: "stud",
     email: "email@gmail.com",
-    password: "password",
+    password: hashSync("password", 10),
     role: UserRoleTypes.Student,
-    createdAt: new Date(),
-  },
-  {
-    username: "Example Name 3",
-    email: "email@gmail.com",
-    password: "password",
-    role: UserRoleTypes.Facilitator,
     createdAt: new Date(),
   },
 ];
