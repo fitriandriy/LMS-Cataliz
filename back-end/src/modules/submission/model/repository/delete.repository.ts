@@ -1,4 +1,4 @@
-import { DiscussionEntityInterface } from "../discussion.entity";
+import { CourseEntityInterface } from "../course.entity";
 import DatabaseConnection, {
   DeleteOptionsInterface,
   DeleteResultInterface,
@@ -6,15 +6,15 @@ import DatabaseConnection, {
 } from "@src/database/connection.js";
 import DatabaseManager from "@src/database/database-manager.js";
 
-interface ResponseInterface extends DiscussionEntityInterface {
+interface ResponseInterface extends CourseEntityInterface {
   _id: string;
 }
 
-export class DeleteDiscussionRepository {
+export class DeleteCourseRepository {
   public databaseManager;
 
   constructor(databaseConnection: DatabaseConnection) {
-    this.databaseManager = new DatabaseManager(databaseConnection, "discussions");
+    this.databaseManager = new DatabaseManager(databaseConnection, "courses");
   }
 
   public async handle(id: string, options?: DeleteOptionsInterface): Promise<DeleteResultInterface> {

@@ -42,9 +42,6 @@ export class UpdateCourseUseCase {
   public async findByUserId(userId: string, options?: RetrieveOptionsInterface): Promise<any> {
     try {
       const response = await new UpdateCourseRepository(this.db).findByUserID(userId, options);
-      if (typeof response == "undefined") {
-        return Error("Not found");
-      }
       return response;
     } catch (error) {
       throw error;

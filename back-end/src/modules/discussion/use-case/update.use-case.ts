@@ -2,7 +2,11 @@ import { objClean } from "@point-hub/express-utils";
 import { DiscussionEntity } from "../model/discussion.entity.js";
 import { UpdateDiscussionRepository } from "../model/repository/update.repository.js";
 import { validate } from "../validation/update.validation.js";
-import DatabaseConnection, { UpdateOptionsInterface, DocumentInterface } from "@src/database/connection.js";
+import DatabaseConnection, {
+  UpdateOptionsInterface,
+  DocumentInterface,
+  RetrieveOptionsInterface,
+} from "@src/database/connection.js";
 
 export class UpdateDiscussionUseCase {
   private db: DatabaseConnection;
@@ -19,8 +23,6 @@ export class UpdateDiscussionUseCase {
       // update database
       const discussionEntity = new DiscussionEntity({
         comment: document.comment,
-        course_id: document.course_id,
-        createdBy_id: document.userId,
         updatedAt: new Date(),
       });
 
@@ -28,6 +30,20 @@ export class UpdateDiscussionUseCase {
       await discussionRepository.handle(id, objClean(discussionEntity), options);
 
       return {};
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async findByUserId(userId: string, options?: RetrieveOptionsInterface): Promise<any> {
+    try {
+      const response = await new UpdateDiscussionRepository(this.db).findByUserID(userId, options);
+      
+      if (typeof response == "undefined") {
+        return Error("Not found");
+      }
+
+      return response;
     } catch (error) {
       throw error;
     }

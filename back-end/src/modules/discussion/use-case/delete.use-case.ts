@@ -1,5 +1,5 @@
 import { DeleteDiscussionRepository } from "../model/repository/delete.repository.js";
-import DatabaseConnection, { DeleteOptionsInterface } from "@src/database/connection.js";
+import DatabaseConnection, { DeleteOptionsInterface, RetrieveOptionsInterface } from "@src/database/connection.js";
 
 export class DeleteDiscussionUseCase {
   private db: DatabaseConnection;
@@ -16,6 +16,18 @@ export class DeleteDiscussionUseCase {
         acknowledged: response.acknowledged,
         deletedCount: response.deletedCount,
       };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async findByUserId(userId: string, options?: RetrieveOptionsInterface): Promise<any> {
+    try {
+      const response = await new DeleteDiscussionRepository(this.db).findByUserID(userId, options);
+      if (typeof response == "undefined") {
+        return Error("Not found");
+      }
+      return response;
     } catch (error) {
       throw error;
     }

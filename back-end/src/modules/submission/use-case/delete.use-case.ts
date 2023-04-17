@@ -24,9 +24,6 @@ export class DeleteCourseUseCase {
   public async findByUserId(userId: string, options?: RetrieveOptionsInterface): Promise<any> {
     try {
       const response = await new DeleteCourseRepository(this.db).findByUserID(userId, options);
-      if (typeof response == "undefined") {
-        return Error("Not found");
-      }
       return response;
     } catch (error) {
       throw error;
