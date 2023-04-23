@@ -22,7 +22,7 @@
         </nav>
         <div class="flex justify-between">
             <div class="flex">
-                <p class="pt-[15%] pr-4">Fitri</p>
+                <p class="pt-[15px] pr-4">{{ userStore.$state.user.name }}</p>
                 <img class="w-[40px] h-[40px] md:w-[50px] md:h-[50px]" src="/profile.png" alt="profile icon">
             </div>
         </div>
@@ -33,6 +33,9 @@
 
 import { RouterLink } from 'vue-router';
 import { ref } from 'vue';
+
+import { useUserStore } from '../states/user';
+const userStore = useUserStore();
 
 const tab = ref([false, false]);
 

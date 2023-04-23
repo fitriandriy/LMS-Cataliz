@@ -10,22 +10,24 @@
             </div>
         </div>
         <hr class="mt-[15px] border-1 border-[grey] md:invisible">
+        <!-- BE OR FE FILTERING COURSES -->
         <div class="my-4 font-medium text-base md:text-lg content-end mb-8">
             <select name="" id="">
                 <option value="front-end">Daftar Kelas Front End</option>
                 <option value="back-end">Daftar Kelas Back End</option>
             </select>
         </div>
+        <!-- COURSE LIST -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div v-for="i in 10">
-                <router-link :to="{ name: 'course', params: {id: i} }">
+            <div v-for="(course) in courseList" :key="course._id">
+                <router-link :to="{ name: 'course', params: {id: course._id} }">
                     <div class="bg-[#F4F4F5] rounded-xl hover:-translate-y-2 hover:shadow-lg hover:shadow-[grey]">
                         <div class>
                             <img src="/webinar-img.png" alt="">
                         </div>
                         <div class="px-4 pb-4">
-                            <h2 class="font-semibold">Pengelolaan Data Menggunakan DOM dan Web Storage</h2>
-                            <p class="mt-3">Oleh: Fitri Andriyani S.Kom,.M.Kom</p>
+                            <h2 class="font-semibold">{{ course.title }}</h2>
+                            <p class="mt-3">{{ course.createdBy_id }}</p>
                         </div>
                     </div>
                 </router-link>
@@ -34,16 +36,28 @@
     </div>
 </template>
 
-<script>
+<script setup>
+import axios from 'axios';
+import { onMounted, ref } from 'vue';
 import Navigation from '../components/Navigation.vue';
 import Vbutton from '../components/Button.vue';
 import Vinput from '../components/Input.vue';
 
-export default {
-    components: {
-        Navigation,
-        Vbutton,
-        Vinput,
-    }
-}
+import { useUserStore } from '../states/user';
+const userStore = useUserStore();
+
+
+
+let courseList = ref([]);
+
+onMounted( async () => {
+    await userStore.fetchUser();
+    axios.get('http://localhost:3000/courses')
+    .then((result) => {
+        courseList.value = result.data.courses;
+    }).catch((err) => {
+        console.log(err.response);
+    });
+});
+
 </script>

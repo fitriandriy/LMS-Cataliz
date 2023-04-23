@@ -6,13 +6,13 @@
             <img class="h-48 rounded-lg" src="/course.jpg" alt="course-image">
             <div class="md:ml-3 lg:ml-0">
                 <header class="flex justify-between md:justify-start mt-3 md:mt-0">
-                    <h1 class="font-bold text-lg md:text-2xl">Belajar Fundamental Web Development</h1>
+                    <h1 class="font-bold text-lg md:text-2xl">{{ course.title }}</h1>
                     <router-link :to="{ name: 'edit-course' }">
                         <button class="w-[40px] mr-[10px] md:mr-0 md:ml-[50px]"><img src="/edit.png" alt="edit icon"></button>
                     </router-link>
                 </header>
-                <span class="inline-block md:mt-6 mb-4">Dibuat oleh: Fitri Andriyani S.Kom,. M.Kom</span>
-                <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Minus optio provident ducimus quod amet quis facilis nemo libero aut? Repellat ipsam a vero dicta nemo quaerat blanditiis optio quisquam minima! lorem60</p>
+                <span class="inline-block md:mt-6 mb-4">Dibuat oleh: {{ course.createdBy_id }}</span>
+                <p>{{ course.description }}</p>
             </div>
         </div>
         <hr class="border border-[#cccccf] mt-4 mb-8">
@@ -25,7 +25,7 @@
             <div>
                 <h2 class="font-bold text-xl mb-2">Prasyarat</h2>
                 <ol>
-                    <li>HTML</li>
+                    <li>{{ course.prerequisites }}</li>
                     <li>CSS</li>
                     <li>Javascript</li>
                     <li>Text Editor</li>
@@ -128,11 +128,16 @@
 
 <script setup lang="ts">
 
-import { ref } from 'vue';
+import axios from 'axios';
+import { useRoute } from 'vue-router';
+import { ref, onMounted, reactive } from 'vue';
 import Navigation from '../components/Navigation.vue';
 import Vbutton from '../components/Button.vue';
 
 const tab = ref([false, false]);
+
+// digunakan untuk mendapatkan id dari url
+const route = useRoute();
 
 const handleClick = (index: number) => {
   tab.value[index] = !tab.value[index];
@@ -145,5 +150,25 @@ const handleRotate = (index: number) => {
 const handleToggle = (index: number) => {
   return tab.value[index] === true ? `max-height: 100%` : '';
 };
+
+let course = reactive({
+    title: '',
+    description: '',
+    prerequisites: '',
+    createdBy_id: '',
+});
+
+onMounted(() => {
+    axios.get(`http://localhost:3000/courses/${route.params.id}`)
+    .then((result) => {
+        course.title = result.data.title;
+        course.description = result.data.description;
+        course.prerequisites = result.data.prerequisites;
+        course.createdBy_id = result.data.createdBy_id;
+        // console.log(course.value)
+    }).catch((err) => {
+        console.log(err.response);
+    });
+});
 
 </script>
