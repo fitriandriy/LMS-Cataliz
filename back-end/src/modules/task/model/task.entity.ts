@@ -1,16 +1,21 @@
 export interface TaskEntityInterface {
   _id?: string;
   deadline?: Date;
-  criteria?: object;
+  criteria?: CriteriaInterface[];
   description?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
+export interface CriteriaInterface {
+  name: string;
+  status: boolean;
+}
+
 export class TaskEntity implements TaskEntityInterface {
   public _id?: string;
   public deadline?: Date;
-  public criteria?: object;
+  public criteria?: CriteriaInterface[];
   public description?: string;
   public createdAt?: Date;
   public updatedAt?: Date;

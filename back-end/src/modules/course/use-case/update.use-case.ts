@@ -2,7 +2,11 @@ import { objClean } from "@point-hub/express-utils";
 import { CourseEntity } from "../model/course.entity.js";
 import { UpdateCourseRepository } from "../model/repository/update.repository.js";
 import { validate } from "../validation/update.validation.js";
-import DatabaseConnection, { UpdateOptionsInterface, DocumentInterface } from "@src/database/connection.js";
+import DatabaseConnection, {
+  UpdateOptionsInterface,
+  DocumentInterface,
+  RetrieveOptionsInterface,
+} from "@src/database/connection.js";
 
 export class UpdateCourseUseCase {
   private db: DatabaseConnection;
@@ -20,7 +24,6 @@ export class UpdateCourseUseCase {
       const courseEntity = new CourseEntity({
         title: document.title,
         thumbnail: document.thumbnail,
-        createdBy_id: document.createdBy_id,
         description: document.description,
         prerequisites: document.prerequisites,
         section: document.section,
@@ -31,6 +34,18 @@ export class UpdateCourseUseCase {
       await courseRepository.handle(id, objClean(courseEntity), options);
 
       return {};
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  public async findByUserId(userId: string, options?: RetrieveOptionsInterface): Promise<any> {
+    try {
+      const response = await new UpdateCourseRepository(this.db).findByUserID(userId, options);
+      if (typeof response == "undefined") {
+        return Error("Not found");
+      }
+      return response;
     } catch (error) {
       throw error;
     }

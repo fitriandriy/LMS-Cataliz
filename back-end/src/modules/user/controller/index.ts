@@ -1,4 +1,3 @@
-export { loginController } from "./login.controller.js";
+export { authLoginController, authRegisterController, authLogoutController } from "./auth.controller.js";
 export { retrieveAllController } from "./retrieve-all.controller.js";
-export { registerController } from "./register.controller.js";
-// export { logoutController } from "./logout.controller.js";
+export { retrieveController } from "./retrieve.controller.js"
