@@ -14,6 +14,7 @@ export class CreateCourseUseCase {
     try {
       // validate request body
       validate(document);
+      console.log(document.thumbnail);
 
       // save to database
       const courseEntity = new CourseEntity({

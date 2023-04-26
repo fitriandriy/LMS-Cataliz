@@ -9,7 +9,7 @@ export const deleteController = async (req: Request, res: Response, next: NextFu
     db.startTransaction();
 
     const deleteCourseUseCase = new DeleteCourseUseCase(db);
-    const response = await deleteCourseUseCase.findByUserId(req.body.userId);
+    const response = await deleteCourseUseCase.findCreatedById(req.params.id);
 
     if (req.body.userRole !== "facilitator" || req.body.userId !== response.createdBy_id) {
       res.status(401).send("Unauthorized");

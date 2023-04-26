@@ -1,8 +1,8 @@
-import { CourseEntityInterface } from "../course.entity.js";
+import { SubmissionEntityInterface } from "../submission.entity.js";
 import DatabaseConnection, { QueryInterface, RetrieveAllOptionsInterface } from "@src/database/connection.js";
 import DatabaseManager from "@src/database/database-manager.js";
 
-interface DataInterface extends CourseEntityInterface {
+interface DataInterface extends SubmissionEntityInterface {
   _id: string;
 }
 
@@ -16,11 +16,11 @@ interface ResponseInterface {
   };
 }
 
-export class RetrieveAllCourseRepository {
+export class RetrieveAllSubmissionRepository {
   public databaseManager;
 
   constructor(databaseConnection: DatabaseConnection) {
-    this.databaseManager = new DatabaseManager(databaseConnection, "courses");
+    this.databaseManager = new DatabaseManager(databaseConnection, "submissions");
   }
 
   public async handle(query: QueryInterface, options?: RetrieveAllOptionsInterface): Promise<ResponseInterface> {

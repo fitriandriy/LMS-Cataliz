@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { CreateCourseUseCase } from "../use-case/create.use-case.js";
+import { CreateSubmissionUseCase } from "../use-case/create.use-case.js";
 import { db } from "@src/database/database.js";
 
 export const createController = async (req: Request, res: Response, next: NextFunction) => {
@@ -8,12 +8,12 @@ export const createController = async (req: Request, res: Response, next: NextFu
 
     db.startTransaction();
 
-    if (req.body.userRole !== "facilitator") {
+    if (req.body.userRole !== "student") {
       res.sendStatus(403);
     }
 
-    const createCourseUseCase = new CreateCourseUseCase(db);
-    const result = await createCourseUseCase.handle(req.body, { session });
+    const createSubmissionUseCase = new CreateSubmissionUseCase(db);
+    const result = await createSubmissionUseCase.handle(req.body, { session });
 
     await db.commitTransaction();
 

@@ -16,12 +16,11 @@ export class RetrieveUserUseCase {
     this.db = db;
   }
 
-  public async handle(id: string, options?: RetrieveOptionsInterface): Promise<ResponseInterface> {
+  public async handle(username: string, options?: RetrieveOptionsInterface): Promise<any> {
     try {
-      const response = await new RetrieveUserRepository(this.db).handle(id, options);
+      const response = await new RetrieveUserRepository(this.db).handle(username, options);
 
       return {
-        _id: response._id,
         username: response.username,
         email: response.email,
         role: response.role,
@@ -31,4 +30,5 @@ export class RetrieveUserUseCase {
       throw error;
     }
   }
+
 }

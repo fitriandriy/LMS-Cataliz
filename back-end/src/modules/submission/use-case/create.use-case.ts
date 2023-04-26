@@ -1,9 +1,9 @@
-import { CourseEntity } from "../model/course.entity.js";
-import { CreateCourseRepository } from "../model/repository/create.repository.js";
+import { CreateSubmissionRepository } from "../model/repository/create.repository.js";
+import { SubmissionEntity } from "../model/submission.entity.js";
 import { validate } from "../validation/create.validation.js";
 import DatabaseConnection, { CreateOptionsInterface, DocumentInterface } from "@src/database/connection.js";
 
-export class CreateCourseUseCase {
+export class CreateSubmissionUseCase {
   private db: DatabaseConnection;
 
   constructor(db: DatabaseConnection) {
@@ -16,17 +16,16 @@ export class CreateCourseUseCase {
       validate(document);
 
       // save to database
-      const courseEntity = new CourseEntity({
-        title: document.title,
-        thumbnail: document.thumbnail,
+      const courseEntity = new SubmissionEntity({
+        file: document.file,
+        student_note: document.student_note,
         createdBy_id: document.userId,
-        description: document.description,
-        prerequisites: document.prerequisites,
-        section: document.section,
+        task_id: document.task_id,
+        report: document.report,
         createdAt: new Date(),
       });
 
-      const response = await new CreateCourseRepository(this.db).handle(courseEntity, options);
+      const response = await new CreateSubmissionRepository(this.db).handle(courseEntity, options);
 
       return {
         acknowledged: response.acknowledged,

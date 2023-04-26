@@ -12,6 +12,7 @@ export const createController = async (req: Request, res: Response, next: NextFu
       res.sendStatus(403);
     }
 
+    req.body.thumbnail = req.file?.path
     const createCourseUseCase = new CreateCourseUseCase(db);
     const result = await createCourseUseCase.handle(req.body, { session });
 

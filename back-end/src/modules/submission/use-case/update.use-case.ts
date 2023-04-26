@@ -1,6 +1,6 @@
 import { objClean } from "@point-hub/express-utils";
-import { CourseEntity } from "../model/course.entity.js";
-import { UpdateCourseRepository } from "../model/repository/update.repository.js";
+import { UpdateSubmissionRepository } from "../model/repository/update.repository.js";
+import { SubmissionEntity } from "../model/submission.entity.js";
 import { validate } from "../validation/update.validation.js";
 import DatabaseConnection, {
   UpdateOptionsInterface,
@@ -8,7 +8,7 @@ import DatabaseConnection, {
   RetrieveOptionsInterface,
 } from "@src/database/connection.js";
 
-export class UpdateCourseUseCase {
+export class UpdateSubmissionUseCase {
   private db: DatabaseConnection;
 
   constructor(db: DatabaseConnection) {
@@ -21,17 +21,17 @@ export class UpdateCourseUseCase {
       validate(document);
 
       // update database
-      const courseEntity = new CourseEntity({
-        title: document.title,
-        thumbnail: document.thumbnail,
-        description: document.description,
-        prerequisites: document.prerequisites,
-        section: document.section,
+      const submissionEntity = new SubmissionEntity({
+        file: document.file,
+        student_note: document.student_note,
+        createdBy_id: document.userId,
+        task_id: document.task_id,
+        report: document.report,
         updatedAt: new Date(),
       });
 
-      const courseRepository = new UpdateCourseRepository(this.db);
-      await courseRepository.handle(id, objClean(courseEntity), options);
+      const submissionRepository = new UpdateSubmissionRepository(this.db);
+      await submissionRepository.handle(id, objClean(submissionEntity), options);
 
       return {};
     } catch (error) {
@@ -41,7 +41,7 @@ export class UpdateCourseUseCase {
 
   public async findByUserId(userId: string, options?: RetrieveOptionsInterface): Promise<any> {
     try {
-      const response = await new UpdateCourseRepository(this.db).findByUserID(userId, options);
+      const response = await new UpdateSubmissionRepository(this.db).findByUserID(userId, options);
       return response;
     } catch (error) {
       throw error;

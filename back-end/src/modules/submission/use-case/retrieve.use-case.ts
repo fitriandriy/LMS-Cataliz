@@ -1,18 +1,28 @@
-import { RetrieveCourseRepository } from "../model/repository/retrieve.repository.js";
+import { RetrieveSubmissionRepository } from "../model/repository/retrieve.repository.js";
 import DatabaseConnection, { RetrieveOptionsInterface } from "@src/database/connection.js";
 
 interface ResponseInterface {
   _id: string;
-  title?: string;
-  thumbnail?: string;
-  description?: string;
-  prerequisites?: string;
-  section?: string;
+  file?: string;
+  student_note?: string;
+  task_id?: string;
+  report?: {
+    acceptance_status: boolean;
+    criteria: CriteriaInterface[];
+    reviewer_note: string;
+    grade: number;
+  };
+  criteria?: string;
   createdBy_id?: string;
   createdAt?: Date;
 }
 
-export class RetrieveCourseUseCase {
+export interface CriteriaInterface {
+  name: string;
+  status: boolean;
+}
+
+export class RetrieveSubmissionUseCase {
   private db: DatabaseConnection;
 
   constructor(db: DatabaseConnection) {
@@ -21,15 +31,14 @@ export class RetrieveCourseUseCase {
 
   public async handle(id: string, options?: RetrieveOptionsInterface): Promise<ResponseInterface> {
     try {
-      const response = await new RetrieveCourseRepository(this.db).handle(id, options);
+      const response = await new RetrieveSubmissionRepository(this.db).handle(id, options);
 
       return {
         _id: response._id,
-        title: response.title,
-        thumbnail: response.thumbnail,
-        description: response.description,
-        prerequisites: response.prerequisites,
-        section: response.section,
+        file: response.file,
+        student_note: response.student_note,
+        task_id: response.task_id,
+        report: response.report,
         createdBy_id: response.createdBy_id,
         createdAt: response.createdAt,
       };

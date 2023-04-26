@@ -8,7 +8,7 @@
 import { IDatabaseAdapter } from "@src/database/connection.js";
 import { MongoDBHelper } from "@src/database/mongodb/mongodb-helper.js";
 
-export const collection = "courses";
+export const collection = "submissions";
 
 export async function createCollection(db: IDatabaseAdapter) {
   try {
@@ -22,24 +22,16 @@ export async function createCollection(db: IDatabaseAdapter) {
     console.info(`[schema] ${collection} - update schema`);
     await db.updateSchema(collection, {
       bsonType: "object",
-      required: ["title", "description", "prerequisites"],
+      required: ["file"],
       properties: {
-        title: {
+        file: {
           bsonType: "string",
-          description: "The title for the course",
-        },
-        description: {
-          bsonType: "string",
-          description: "The description for the course",
-        },
-        prerequisites: {
-          bsonType: "string",
-          description: "The prerequisites for the course",
+          description: "The file for the course",
         },
       },
     });
-    console.info(`[schema] ${collection} - create unique attribute "title"`);
-    await helper.createUnique(collection, "title");
+    // console.info(`[schema] ${collection} - create unique attribute "title"`);
+    // await helper.createUnique(collection, "title");
   } catch (error) {
     throw error;
   }

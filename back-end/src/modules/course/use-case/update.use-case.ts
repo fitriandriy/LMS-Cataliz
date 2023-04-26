@@ -39,13 +39,18 @@ export class UpdateCourseUseCase {
     }
   }
 
-  public async findByUserId(userId: string, options?: RetrieveOptionsInterface): Promise<any> {
+  public async findCreatedById(id: string, options?: RetrieveOptionsInterface): Promise<any> {
     try {
-      const response = await new UpdateCourseRepository(this.db).findByUserID(userId, options);
+      const response = await new UpdateCourseRepository(this.db).findCreatedById(id, options);
       if (typeof response == "undefined") {
         return Error("Not found");
       }
-      return response;
+
+      return {
+        id: response._id,
+        createdBy_id: response.createdBy_id,
+        createdAt: response.createdAt,
+      };
     } catch (error) {
       throw error;
     }
