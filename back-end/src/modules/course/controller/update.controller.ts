@@ -11,10 +11,11 @@ export const updateController = async (req: Request, res: Response, next: NextFu
     const updateCourseUseCase = new UpdateCourseUseCase(db);
     const response = await updateCourseUseCase.findCreatedById(req.params.id);
 
-    if (req.body.userRole !== "facilitator" || req.body.userId !== response.createdBy_id) {
+    if (req.params.userRole !== "facilitator" || req.params.userId !== response.createdBy_id) {
       res.status(401).send("Unauthorized");
     }
-
+    req.body.old_thumbnail = response.thumbnail;
+    req.body.file = req.file;
     await updateCourseUseCase.handle(req.params.id, req.body, { session });
 
     await db.commitTransaction();

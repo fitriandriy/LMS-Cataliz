@@ -26,7 +26,7 @@ const upload = multer({
 const router = Router();
 router.get("/", controller.retrieveAllController);
 router.get("/:id", controller.retrieveController);
-router.post("/", upload.single("thumbnail"), authMiddleware, controller.createController);
+router.post("/", authMiddleware, upload.single("thumbnail"), controller.createController);
 // router.patch(
 //   "/:id",
 //   authMiddleware,
@@ -61,7 +61,7 @@ router.post("/", upload.single("thumbnail"), authMiddleware, controller.createCo
 //   },
 //   controller.updateController
 // );
-router.patch("/:id", upload.single("thumbnail"), authMiddleware, controller.updateController);
+router.patch("/:id", authMiddleware, upload.single("thumbnail"), controller.updateController);
 router.delete("/:id", authMiddleware, controller.deleteController);
 
 export default router;

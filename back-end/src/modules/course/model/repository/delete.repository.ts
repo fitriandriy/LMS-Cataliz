@@ -24,7 +24,7 @@ export class DeleteCourseRepository {
 
   public async findCreatedById(id: string, options?: RetrieveOptionsInterface): Promise<ResponseInterface> {
     const response: CourseEntityInterface = await this.databaseManager.retrieve(id, options);
-
+    console.log(response);
     return {
       _id: response._id as string,
       ...response,

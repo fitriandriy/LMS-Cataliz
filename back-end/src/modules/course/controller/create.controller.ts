@@ -8,11 +8,14 @@ export const createController = async (req: Request, res: Response, next: NextFu
 
     db.startTransaction();
 
-    if (req.body.userRole !== "facilitator") {
+    if (req.params.userRole !== "facilitator") {
       res.sendStatus(403);
     }
 
-    req.body.thumbnail = req.file?.path
+    req.body.userId = req.params.userId;
+    req.body.userRole = req.params.userRole;
+
+    req.body.thumbnail = req.file?.path;
     const createCourseUseCase = new CreateCourseUseCase(db);
     const result = await createCourseUseCase.handle(req.body, { session });
 

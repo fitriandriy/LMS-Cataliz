@@ -1,6 +1,10 @@
 import fs from "fs";
 import { DeleteCourseRepository } from "../model/repository/delete.repository.js";
-import DatabaseConnection, { DeleteOptionsInterface, RetrieveOptionsInterface } from "@src/database/connection.js";
+import DatabaseConnection, {
+  DeleteOptionsInterface,
+  DocumentInterface,
+  RetrieveOptionsInterface,
+} from "@src/database/connection.js";
 
 export class DeleteCourseUseCase {
   private db: DatabaseConnection;
@@ -9,24 +13,24 @@ export class DeleteCourseUseCase {
     this.db = db;
   }
 
-  public async handle(id: string, options: DeleteOptionsInterface) {
+  public async handle(document: DocumentInterface, options: DeleteOptionsInterface) {
     try {
-      fs.access(`uploads/courses/thumbnail/${id}`, fs.constants.F_OK, (err) => {
+      fs.access(document.filename, fs.constants.F_OK, (err) => {
         if (err) {
-          return "File not found";
+          return new Error("File Not Found");
         } else {
           // Delete file if it exists
-          fs.unlink(`uploads/courses/thumbnail/${id}`, (err) => {
+          fs.unlink(document.filename, (err) => {
             if (err) {
-              return "Error deleting file";
+              return new Error("Error deleting file");
             } else {
-              return "File deleted successfully";
+              return new Error("File deleted successfully");
             }
           });
         }
       });
 
-      const response = await new DeleteCourseRepository(this.db).handle(id, options);
+      const response = await new DeleteCourseRepository(this.db).handle(document.id, options);
 
       return {
         acknowledged: response.acknowledged,
@@ -46,6 +50,7 @@ export class DeleteCourseUseCase {
 
       return {
         id: response._id,
+        thumbnail: response.thumbnail,
         createdBy_id: response.createdBy_id,
         createdAt: response.createdAt,
       };
