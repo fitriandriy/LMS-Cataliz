@@ -3,7 +3,6 @@ import DatabaseConnection, { RetrieveOptionsInterface } from "@src/database/conn
 
 interface ResponseInterface {
   _id: string;
-  deadline?: Date;
   title?: string;
   description?: string;
   video_link?: string;
@@ -25,7 +24,6 @@ export class RetrieveSectionUseCase {
 
       return {
         _id: response._id,
-        deadline: response.deadline,
         title: response.title,
         video_link: response.video_link,
         description: response.description,

@@ -2,11 +2,7 @@ import { objClean } from "@point-hub/express-utils";
 import { UpdateSectionRepository } from "../model/repository/update.repository.js";
 import { SectionEntity } from "../model/section.entity.js";
 import { validate } from "../validation/update.validation.js";
-import DatabaseConnection, {
-  UpdateOptionsInterface,
-  DocumentInterface,
-  RetrieveOptionsInterface,
-} from "@src/database/connection.js";
+import DatabaseConnection, { UpdateOptionsInterface, DocumentInterface } from "@src/database/connection.js";
 
 export class UpdateSectionUseCase {
   private db: DatabaseConnection;
@@ -23,7 +19,6 @@ export class UpdateSectionUseCase {
       // update database
       const sectionEntity = new SectionEntity({
         title: document.title,
-        deadline: document.deadline,
         description: document.description,
         video_link: document.video_link,
         updatedAt: new Date(),

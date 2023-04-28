@@ -17,7 +17,6 @@ export class CreateSectionUseCase {
 
       // save to database
       const sectionEntity = new SectionEntity({
-        deadline: document.deadline,
         title: document.title,
         video_link: document.video_link,
         task_id: document.task_id,
