@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { UpdateCourseUseCase } from "../use-case/update.use-case.js";
+import { UpdateSubmissionUseCase } from "../use-case/update.use-case.js";
 import { db } from "@src/database/database.js";
 
 export const updateController = async (req: Request, res: Response, next: NextFunction) => {
@@ -8,14 +8,14 @@ export const updateController = async (req: Request, res: Response, next: NextFu
 
     db.startTransaction();
 
-    const updateCourseUseCase = new UpdateCourseUseCase(db);
-    const response = await updateCourseUseCase.findByUserId(req.body.userId);
+    const updateSubmissionUseCase = new UpdateSubmissionUseCase(db);
+    const response = await updateSubmissionUseCase.findByUserId(req.body.userId);
 
-    if (req.body.userRole !== "facilitator" || req.body.userId !== response.createdBy_id) {
+    if (req.body.userRole !== "student" || req.body.userId !== response.createdBy_id) {
       res.status(401).send("Unauthorized");
     }
 
-    await updateCourseUseCase.handle(req.params.id, req.body, { session });
+    await updateSubmissionUseCase.handle(req.params.id, req.body, { session });
 
     await db.commitTransaction();
 

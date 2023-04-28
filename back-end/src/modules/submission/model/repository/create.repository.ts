@@ -5,11 +5,11 @@ import DatabaseConnection, {
 } from "@src/database/connection.js";
 import DatabaseManager from "@src/database/database-manager.js";
 
-export class CreateCourseRepository {
+export class CreateSubmissionRepository {
   public databaseManager;
 
   constructor(databaseConnection: DatabaseConnection) {
-    this.databaseManager = new DatabaseManager(databaseConnection, "courses");
+    this.databaseManager = new DatabaseManager(databaseConnection, "submissions");
   }
 
   public async handle(document: DocumentInterface, options?: CreateOptionsInterface): Promise<CreateResultInterface> {

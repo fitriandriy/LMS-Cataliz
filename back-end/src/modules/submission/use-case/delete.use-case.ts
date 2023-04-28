@@ -1,7 +1,7 @@
-import { DeleteCourseRepository } from "../model/repository/delete.repository.js";
+import { DeleteSubmissionRepository } from "../model/repository/delete.repository.js";
 import DatabaseConnection, { DeleteOptionsInterface, RetrieveOptionsInterface } from "@src/database/connection.js";
 
-export class DeleteCourseUseCase {
+export class DeleteSubmissionUseCase {
   private db: DatabaseConnection;
 
   constructor(db: DatabaseConnection) {
@@ -10,7 +10,7 @@ export class DeleteCourseUseCase {
 
   public async handle(id: string, options: DeleteOptionsInterface) {
     try {
-      const response = await new DeleteCourseRepository(this.db).handle(id, options);
+      const response = await new DeleteSubmissionRepository(this.db).handle(id, options);
 
       return {
         acknowledged: response.acknowledged,
@@ -23,7 +23,7 @@ export class DeleteCourseUseCase {
 
   public async findByUserId(userId: string, options?: RetrieveOptionsInterface): Promise<any> {
     try {
-      const response = await new DeleteCourseRepository(this.db).findByUserID(userId, options);
+      const response = await new DeleteSubmissionRepository(this.db).findByUserID(userId, options);
       return response;
     } catch (error) {
       throw error;

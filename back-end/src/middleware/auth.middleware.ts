@@ -11,8 +11,8 @@ export async function authMiddleware(req: Request, res: Response, next: NextFunc
   const token = authorizationHeader.split(" ")[1];
   try {
     const payload = AuthUserUseCase.verifyToken(token);
-    req.body.userId = payload.userId;
-    req.body.userRole = payload.userRole;
+    req.params.userId = payload.userId;
+    req.params.userRole = payload.userRole;
 
     next();
   } catch (error) {

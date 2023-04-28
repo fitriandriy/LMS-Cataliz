@@ -9,13 +9,14 @@ export const deleteController = async (req: Request, res: Response, next: NextFu
     db.startTransaction();
 
     const deleteCourseUseCase = new DeleteCourseUseCase(db);
-    const response = await deleteCourseUseCase.findByUserId(req.body.userId);
-
-    if (req.body.userRole !== "facilitator" || req.body.userId !== response.createdBy_id) {
+    const response = await deleteCourseUseCase.findCreatedById(req.params.id);
+    if (req.params.userRole !== "facilitator" || req.params.userId !== response.createdBy_id) {
       res.status(401).send("Unauthorized");
     }
 
-    await deleteCourseUseCase.handle(req.params.id, { session });
+    req.params.filename = response.thumbnail;
+
+    await deleteCourseUseCase.handle(req.params, { session });
 
     await db.commitTransaction();
 

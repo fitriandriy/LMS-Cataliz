@@ -5,10 +5,9 @@ import { db } from "@src/database/database.js";
 export const retrieveController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const retrieveUserUseCase = new RetrieveUserUseCase(db);
-    const result = await retrieveUserUseCase.handle(req.params.id);
+    const result = await retrieveUserUseCase.handle(req.params.username);
 
     res.status(200).json({
-      _id: result._id,
       username: result.username,
       email: result.email,
       role: result.role,

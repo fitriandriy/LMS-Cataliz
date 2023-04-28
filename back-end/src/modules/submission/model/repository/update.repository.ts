@@ -1,4 +1,4 @@
-import { CourseEntityInterface } from "../course.entity";
+import { SubmissionEntityInterface } from "../submission.entity";
 import DatabaseConnection, {
   DocumentInterface,
   RetrieveOptionsInterface,
@@ -7,15 +7,15 @@ import DatabaseConnection, {
 } from "@src/database/connection.js";
 import DatabaseManager from "@src/database/database-manager.js";
 
-interface ResponseInterface extends CourseEntityInterface {
+interface ResponseInterface extends SubmissionEntityInterface {
   _id: string;
 }
 
-export class UpdateCourseRepository {
+export class UpdateSubmissionRepository {
   public databaseManager;
 
   constructor(databaseConnection: DatabaseConnection) {
-    this.databaseManager = new DatabaseManager(databaseConnection, "courses");
+    this.databaseManager = new DatabaseManager(databaseConnection, "submissions");
   }
 
   public async handle(

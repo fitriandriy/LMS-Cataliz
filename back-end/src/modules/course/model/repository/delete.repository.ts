@@ -7,6 +7,7 @@ import DatabaseConnection, {
 import DatabaseManager from "@src/database/database-manager.js";
 
 interface ResponseInterface extends CourseEntityInterface {
+  [x: string]: any;
   _id: string;
 }
 
@@ -21,12 +22,12 @@ export class DeleteCourseRepository {
     return await this.databaseManager.delete(id, options);
   }
 
-  public async findByUserID(createdBy_id: string, options?: RetrieveOptionsInterface): Promise<ResponseInterface> {
-    const response: any = await this.databaseManager.retrieveAll(
-      { fields: "", filter: { createdBy_id }, page: 1, pageSize: 1, sort: "asc" },
-      options
-    );
-
-    return response.data[0];
+  public async findCreatedById(id: string, options?: RetrieveOptionsInterface): Promise<ResponseInterface> {
+    const response: CourseEntityInterface = await this.databaseManager.retrieve(id, options);
+    console.log(response);
+    return {
+      _id: response._id as string,
+      ...response,
+    };
   }
 }
