@@ -1,5 +1,5 @@
-import { TaskEntity } from "../model/task.entity.js";
 import { CreateTaskRepository } from "../model/repository/create.repository.js";
+import { TaskEntity } from "../model/task.entity.js";
 import { validate } from "../validation/create.validation.js";
 import DatabaseConnection, { CreateOptionsInterface, DocumentInterface } from "@src/database/connection.js";
 

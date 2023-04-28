@@ -9,11 +9,14 @@ export const updateController = async (req: Request, res: Response, next: NextFu
     db.startTransaction();
 
     const updateSubmissionUseCase = new UpdateSubmissionUseCase(db);
-    const response = await updateSubmissionUseCase.findByUserId(req.body.userId);
+    const response = await updateSubmissionUseCase.findByUserId(req.params.userId);
 
-    if (req.body.userRole !== "student" || req.body.userId !== response.createdBy_id) {
+    if (req.params.userRole !== "student" || req.params.userId !== response.createdBy_id) {
       res.status(401).send("Unauthorized");
     }
+
+    req.body.userRole = req.params.userRole;
+    req.body.userId = req.params.userId;
 
     await updateSubmissionUseCase.handle(req.params.id, req.body, { session });
 

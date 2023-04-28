@@ -8,7 +8,7 @@ export const createController = async (req: Request, res: Response, next: NextFu
 
     db.startTransaction();
 
-    if (req.body.userRole !== "student") {
+    if (req.params.userRole !== "facilitator") {
       res.sendStatus(403);
     }
 

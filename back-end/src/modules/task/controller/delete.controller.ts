@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { DeleteSubmissionUseCase } from "../use-case/delete.use-case.js";
+import { DeleteTaskUseCase } from "../use-case/delete.use-case.js";
 import { db } from "@src/database/database.js";
 
 export const deleteController = async (req: Request, res: Response, next: NextFunction) => {
@@ -8,14 +8,13 @@ export const deleteController = async (req: Request, res: Response, next: NextFu
 
     db.startTransaction();
 
-    const deleteSubmissionUseCase = new DeleteSubmissionUseCase(db);
-    const response = await deleteSubmissionUseCase.findByUserId(req.params.userId);
-
-    if (req.params.userRole !== "student" || req.params.userId !== response.createdBy_id) {
-      res.status(401).send("Unauthorized");
+    if (req.params.userRole !== "facilitator") {
+      res.sendStatus(403);
     }
 
-    await deleteSubmissionUseCase.handle(req.params.id, { session });
+    const deleteTaskUseCase = new DeleteTaskUseCase(db);
+
+    await deleteTaskUseCase.handle(req.params.id, { session });
 
     await db.commitTransaction();
 

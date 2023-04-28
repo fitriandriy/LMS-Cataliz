@@ -18,8 +18,8 @@ export default function () {
   app.use("/auth", authRouter);
   app.use("/submissions", submissionRouter);
   app.use("/courses", courseRouter);
-  app.use("/courses/:course_id/tasks", taskRouter);
-  app.use("/courses/:course_id/section", sectionRouter);
+  app.use("/courses/:course_id/sections/:section_id/tasks", taskRouter);
+  app.use("/courses/:course_id/sections", sectionRouter);
   app.use("/courses/:course_id/discussions", discussionRouter);
 
   return app;
