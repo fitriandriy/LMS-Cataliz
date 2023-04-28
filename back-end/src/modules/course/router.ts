@@ -24,43 +24,9 @@ const upload = multer({
 });
 
 const router = Router();
-router.get("/", controller.retrieveAllController);
-router.get("/:id", controller.retrieveController);
+router.get("/", authMiddleware, controller.retrieveAllController);
+router.get("/:id", authMiddleware, controller.retrieveController);
 router.post("/", authMiddleware, upload.single("thumbnail"), controller.createController);
-// router.patch(
-//   "/:id",
-//   authMiddleware,
-//   upload.single("thumbnail"),
-//   (req: Request, res: Response) => {
-//     const id = req.params.id;
-//     // Check if file exists for given ID
-//     fs.access(`uploads/courses/thumbnail/${id}`, fs.constants.F_OK, (err) => {
-//       if (err) {
-//         res.status(404).send("File not found");
-//       } else {
-//         // Update file if it exists
-//         if (req.file) {
-//           fs.unlink(`uploads/${id}`, (err) => {
-//             if (err) {
-//               res.status(500).send("Error deleting file");
-//             } else {
-//               fs.writeFile(`uploads/${req.file.originalname}`, req.file.buffer, (err) => {
-//                 if (err) {
-//                   res.status(500).send("Error writing file");
-//                 } else {
-//                   res.send("File updated successfully");
-//                 }
-//               });
-//             }
-//           });
-//         } else {
-//           res.status(400).send("No file provided");
-//         }
-//       }
-//     });
-//   },
-//   controller.updateController
-// );
 router.patch("/:id", authMiddleware, upload.single("thumbnail"), controller.updateController);
 router.delete("/:id", authMiddleware, controller.deleteController);
 
