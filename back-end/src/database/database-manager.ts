@@ -76,7 +76,7 @@ export default class DatabaseManager {
   }
 
   public async aggregate(
-    pipeline: never,
+    pipeline: DocumentInterface,
     query: AggregateQueryInterface,
     options?: AggregateOptionsInterface
   ): Promise<AggregateResultInterface> {

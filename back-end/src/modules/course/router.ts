@@ -1,5 +1,5 @@
-import { Router, Request, Response, NextFunction } from "express";
-import multer, { Multer } from "multer";
+import { Router } from "express";
+import multer from "multer";
 import * as controller from "./controller/index.js";
 import { authMiddleware } from "@src/middleware/auth.middleware.js";
 

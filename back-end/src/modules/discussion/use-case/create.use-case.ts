@@ -17,7 +17,7 @@ export class CreateDiscussionUseCase {
 
       // save to database
       const discussionEntity = new DiscussionEntity({
-        course_id: document.baseUrl,
+        course_id: document.course_id,
         createdBy_id: document.userId,
         comment: document.comment,
         createdAt: new Date(),

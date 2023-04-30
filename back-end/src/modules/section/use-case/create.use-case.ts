@@ -19,8 +19,7 @@ export class CreateSectionUseCase {
       const sectionEntity = new SectionEntity({
         title: document.title,
         video_link: document.video_link,
-        task_id: document.task_id,
-        course_id: document.baseUrl,
+        course_id: document.course_id,
         description: document.description,
         createdAt: new Date(),
       });

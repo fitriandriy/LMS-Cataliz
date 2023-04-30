@@ -25,7 +25,7 @@ export class DeleteDiscussionUseCase {
     try {
       const response = await new DeleteDiscussionRepository(this.db).findByUserID(userId, options);
       if (typeof response == "undefined") {
-        return Error("Not found");
+        return Error("User Not found");
       }
       return response;
     } catch (error) {

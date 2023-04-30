@@ -18,6 +18,7 @@ export class UpdateTaskUseCase {
 
       // update database
       const taskEntity = new TaskEntity({
+        name: document.name,
         deadline: document.deadline,
         criteria: document.criteria,
         description: document.description,

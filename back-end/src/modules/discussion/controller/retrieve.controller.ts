@@ -4,8 +4,8 @@ import { db } from "@src/database/database.js";
 
 export const retrieveController = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const createDiscussionUseCase = new RetrieveDiscussionUseCase(db);
-    const result = await createDiscussionUseCase.handle(req.params.id);
+    const retrieveDiscussionUseCase = new RetrieveDiscussionUseCase(db);
+    const result = await retrieveDiscussionUseCase.handle(req.params.id);
 
     res.status(200).json({
       _id: result._id,

@@ -1,3 +1,4 @@
+import { AggregateTaskRepository } from "../model/repository/aggregate.repository.js";
 import { RetrieveAllTaskRepository } from "../model/repository/retrieve-all.repository.js";
 import DatabaseConnection, { QueryInterface, RetrieveAllOptionsInterface } from "@src/database/connection.js";
 
@@ -10,11 +11,19 @@ export class RetrieveAllTaskUseCase {
 
   public async handle(query: QueryInterface, options?: RetrieveAllOptionsInterface) {
     try {
-      const response = await new RetrieveAllTaskRepository(this.db).handle(query, options);
+      const pipeline = [{ $lookup: { from: "courses", localField: "course_id", foreignField: "_id", as: "course" } }];
+      const query = {
+        fields: "",
+        filter: {},
+        page: 1,
+        pageSize: 10,
+        sort: "",
+      };
+      const aggregate = await new AggregateTaskRepository(this.db).aggregate(pipeline, query, options);
 
       return {
-        tasks: response.data,
-        pagination: response.pagination,
+        tasks: aggregate.data,
+        pagination: aggregate.pagination,
       };
     } catch (error) {
       throw error;

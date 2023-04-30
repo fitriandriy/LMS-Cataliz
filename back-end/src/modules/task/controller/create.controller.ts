@@ -4,6 +4,9 @@ import { db } from "@src/database/database.js";
 
 export const createController = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const section_id = req.baseUrl.split("/");
+    req.body.section_id = section_id[4];
+
     const session = db.startSession();
 
     db.startTransaction();
