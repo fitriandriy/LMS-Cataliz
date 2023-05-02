@@ -11,7 +11,16 @@ export class RetrieveAllTaskUseCase {
 
   public async handle(query: QueryInterface, options?: RetrieveAllOptionsInterface) {
     try {
-      const pipeline = [{ $lookup: { from: "courses", localField: "course_id", foreignField: "_id", as: "course" } }];
+      const pipeline = [
+        {
+          $lookup: { from: "sections", localField: "section_id", foreignField: "_id", as: "section" },
+          pipeline: [
+            { $match: { $expr: { $eq: ["$_id", "$$section._id"] } } },
+            { $lookup: { from: "courses", localField: "course_id", foreignField: "_id", as: "course" } },
+            { $unwind: "$course" },
+          ],
+        },
+      ];
       const query = {
         fields: "",
         filter: {},

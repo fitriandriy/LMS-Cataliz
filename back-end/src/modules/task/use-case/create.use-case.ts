@@ -14,11 +14,9 @@ export class CreateTaskUseCase {
     try {
       // validate request body
       validate(document);
-      console.log(document.section_id);
 
       // save to database
       const taskEntity = new TaskEntity({
-        name: document.name,
         deadline: document.deadline,
         criteria: document.criteria,
         section_id: document.section_id,

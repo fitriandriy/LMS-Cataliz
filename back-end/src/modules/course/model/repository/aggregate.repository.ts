@@ -2,6 +2,7 @@ import DatabaseConnection, {
   AggregateResultInterface,
   AggregateQueryInterface,
   AggregateOptionsInterface,
+  DocumentInterface,
 } from "@src/database/connection.js";
 import DatabaseManager from "@src/database/database-manager.js";
 
@@ -12,7 +13,7 @@ export class AggregateCourseRepository {
     this.databaseManager = new DatabaseManager(databaseConnection, "courses");
   }
   public async aggregate(
-    pipeline: never,
+    pipeline: DocumentInterface,
     query: AggregateQueryInterface,
     options?: AggregateOptionsInterface
   ): Promise<AggregateResultInterface> {

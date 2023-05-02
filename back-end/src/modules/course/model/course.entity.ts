@@ -1,5 +1,6 @@
 export interface CourseEntityInterface {
   _id?: string;
+  theme?: string;
   title?: string;
   thumbnail?: string;
   createdBy_id?: string;
@@ -12,6 +13,7 @@ export interface CourseEntityInterface {
 
 export class CourseEntity implements CourseEntityInterface {
   public _id?: string;
+  public theme?: string;
   public title?: string;
   public thumbnail?: string;
   public createdBy_id?: string;
@@ -23,6 +25,7 @@ export class CourseEntity implements CourseEntityInterface {
 
   constructor(course: CourseEntityInterface) {
     this._id = course._id;
+    this.theme = course.theme;
     this.title = course.title;
     this.thumbnail = course.thumbnail;
     this.createdBy_id = course.createdBy_id;
