@@ -1,7 +1,5 @@
-import { ObjectId } from "mongodb";
 import mongoose from "mongoose";
 import { AggregateCourseRepository } from "../model/repository/aggregate.repository.js";
-import { RetrieveCourseRepository } from "../model/repository/retrieve.repository.js";
 import DatabaseConnection, { RetrieveOptionsInterface } from "@src/database/connection.js";
 
 export class RetrieveCourseUseCase {
@@ -50,7 +48,6 @@ export class RetrieveCourseUseCase {
         sort: "",
       };
       const aggregate = await new AggregateCourseRepository(this.db).aggregate(pipeline, query, options);
-      // const response = await new RetrieveCourseRepository(this.db).handle(id, options);
 
       return {
         course: aggregate.data,
