@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { CreateSubmissionUseCase } from "../use-case/create.use-case.js";
+import { UpdateTaskUseCase } from "../use-case/update.use-case.js";
 import { db } from "@src/database/database.js";
 
-export const createController = async (req: Request, res: Response, next: NextFunction) => {
+export const updateController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const session = db.startSession();
 
@@ -12,14 +12,12 @@ export const createController = async (req: Request, res: Response, next: NextFu
       res.sendStatus(403);
     }
 
-    const createSubmissionUseCase = new CreateSubmissionUseCase(db);
-    const result = await createSubmissionUseCase.handle(req.body, { session });
+    const updateTaskUseCase = new UpdateTaskUseCase(db);
+    await updateTaskUseCase.handle(req.params.id, req.body, { session });
 
     await db.commitTransaction();
 
-    res.status(201).json({
-      _id: result._id,
-    });
+    res.status(204).json();
   } catch (error) {
     await db.abortTransaction();
     next(error);

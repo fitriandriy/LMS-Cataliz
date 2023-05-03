@@ -5,8 +5,8 @@ import { db } from "@src/database/database.js";
 
 export const retrieveAllController = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const createDiscussionUseCase = new RetrieveAllDiscussionUseCase(db);
-    const result = await createDiscussionUseCase.handle(req.query as unknown as QueryInterface);
+    const retrieveAllDiscussionUseCase = new RetrieveAllDiscussionUseCase(db);
+    const result = await retrieveAllDiscussionUseCase.handle(req.query as unknown as QueryInterface);
 
     res.status(200).json({
       discussions: result.discussions,

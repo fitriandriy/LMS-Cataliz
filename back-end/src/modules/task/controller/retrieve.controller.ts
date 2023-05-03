@@ -4,8 +4,8 @@ import { db } from "@src/database/database.js";
 
 export const retrieveController = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const createTaskUseCase = new RetrieveTaskUseCase(db);
-    const result = await createTaskUseCase.handle(req.params.id);
+    const retrieveTaskUseCase = new RetrieveTaskUseCase(db);
+    const result = await retrieveTaskUseCase.handle(req.params.id);
 
     res.status(200).json({
       _id: result._id,

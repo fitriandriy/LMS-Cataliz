@@ -1,10 +1,10 @@
 import { objClean } from "@point-hub/express-utils";
-import { UpdateSectionRepository } from "../model/repository/update.repository.js";
-import { SectionEntity } from "../model/section.entity.js";
+import { UpdateTaskRepository } from "../model/repository/update.repository.js";
+import { TaskEntity } from "../model/task.entity.js";
 import { validate } from "../validation/update.validation.js";
 import DatabaseConnection, { UpdateOptionsInterface, DocumentInterface } from "@src/database/connection.js";
 
-export class UpdateSectionUseCase {
+export class UpdateTaskUseCase {
   private db: DatabaseConnection;
 
   constructor(db: DatabaseConnection) {
@@ -17,15 +17,15 @@ export class UpdateSectionUseCase {
       validate(document);
 
       // update database
-      const sectionEntity = new SectionEntity({
-        title: document.title,
+      const taskEntity = new TaskEntity({
+        deadline: document.deadline,
+        criteria: document.criteria,
         description: document.description,
-        video_link: document.video_link,
         updatedAt: new Date(),
       });
 
-      const sectionRepository = new UpdateSectionRepository(this.db);
-      await sectionRepository.handle(id, objClean(sectionEntity), options);
+      const taskRepository = new UpdateTaskRepository(this.db);
+      await taskRepository.handle(id, objClean(taskEntity), options);
 
       return {};
     } catch (error) {

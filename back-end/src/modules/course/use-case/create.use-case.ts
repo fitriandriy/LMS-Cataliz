@@ -17,6 +17,7 @@ export class CreateCourseUseCase {
 
       // save to database
       const courseEntity = new CourseEntity({
+        theme: document.theme,
         title: document.title,
         thumbnail: document.thumbnail,
         createdBy_id: document.userId,

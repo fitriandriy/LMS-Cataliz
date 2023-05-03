@@ -28,6 +28,10 @@ export async function createCollection(db: IDatabaseAdapter) {
           bsonType: "date",
           description: "The deadline for the course",
         },
+        name: {
+          bsonType: "string",
+          description: "The thumbnail for the course",
+        },
         criteria: {
           bsonType: "string",
           description: "The thumbnail for the course",

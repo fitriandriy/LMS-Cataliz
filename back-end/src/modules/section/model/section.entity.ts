@@ -1,6 +1,5 @@
 export interface SectionEntityInterface {
   _id?: string;
-  deadline?: Date;
   course_id?: string;
   task_id?: string;
   title?: string;
@@ -13,7 +12,6 @@ export interface SectionEntityInterface {
 
 export class SectionEntity implements SectionEntityInterface {
   public _id?: string;
-  public deadline?: Date;
   public course_id?: string;
   public task_id?: string;
   public title?: string;
@@ -24,7 +22,6 @@ export class SectionEntity implements SectionEntityInterface {
 
   constructor(section: SectionEntityInterface) {
     this._id = section._id;
-    this.deadline = section.deadline;
     this.course_id = section.course_id;
     this.title = section.title;
     this.video_link = section.video_link;

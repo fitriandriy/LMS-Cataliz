@@ -4,9 +4,16 @@ import { db } from "@src/database/database.js";
 
 export const createController = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const section_id = req.baseUrl.split("/");
+    req.body.section_id = section_id[4];
+
     const session = db.startSession();
 
     db.startTransaction();
+
+    if (req.params.userRole !== "facilitator") {
+      res.sendStatus(403);
+    }
 
     const createTaskUseCase = new CreateTaskUseCase(db);
     const result = await createTaskUseCase.handle(req.body, { session });

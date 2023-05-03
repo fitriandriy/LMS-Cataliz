@@ -24,7 +24,7 @@ export class DeleteCourseUseCase {
             if (err) {
               return new Error("Error deleting file");
             } else {
-              return new Error("File deleted successfully");
+              return "File deleted successfully";
             }
           });
         }
