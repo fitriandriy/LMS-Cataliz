@@ -3,23 +3,11 @@ import DatabaseConnection, { RetrieveOptionsInterface } from "@src/database/conn
 
 interface ResponseInterface {
   _id: string;
-  file?: string;
   student_note?: string;
-  task_id?: string;
-  report?: {
-    acceptance_status: boolean;
-    criteria: CriteriaInterface[];
-    reviewer_note: string;
-    grade: number;
-  };
-  criteria?: string;
   createdBy_id?: string;
+  task_id?: string;
+  file?: string;
   createdAt?: Date;
-}
-
-export interface CriteriaInterface {
-  name: string;
-  status: boolean;
 }
 
 export class RetrieveSubmissionUseCase {
@@ -35,11 +23,10 @@ export class RetrieveSubmissionUseCase {
 
       return {
         _id: response._id,
-        file: response.file,
         student_note: response.student_note,
-        task_id: response.task_id,
-        report: response.report,
         createdBy_id: response.createdBy_id,
+        file: response.file,
+        task_id: response.task_id,
         createdAt: response.createdAt,
       };
     } catch (error) {

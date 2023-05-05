@@ -1,4 +1,4 @@
-import { isEmailValid } from "./validate.js";
+import { isEmailValid } from "./validate.ts";
 
 describe("validate email", () => {
   it("email yang tidak ada symbol @ maka return false", async () => {

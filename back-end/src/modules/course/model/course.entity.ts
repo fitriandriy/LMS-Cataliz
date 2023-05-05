@@ -6,7 +6,6 @@ export interface CourseEntityInterface {
   createdBy_id?: string;
   description?: string;
   prerequisites?: string;
-  section?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -19,7 +18,6 @@ export class CourseEntity implements CourseEntityInterface {
   public createdBy_id?: string;
   public description?: string;
   public prerequisites?: string;
-  public section?: string;
   public createdAt?: Date;
   public updatedAt?: Date;
 
@@ -31,7 +29,6 @@ export class CourseEntity implements CourseEntityInterface {
     this.createdBy_id = course.createdBy_id;
     this.description = course.description;
     this.prerequisites = course.prerequisites;
-    this.section = course.section;
     this.createdAt = course.createdAt;
     this.updatedAt = course.updatedAt;
   }

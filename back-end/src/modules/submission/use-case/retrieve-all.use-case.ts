@@ -1,6 +1,5 @@
 import { RetrieveAllSubmissionRepository } from "../model/repository/retrieve-all.repository.js";
 import DatabaseConnection, { QueryInterface, RetrieveAllOptionsInterface } from "@src/database/connection.js";
-
 export class RetrieveAllSubmissionUseCase {
   private db: DatabaseConnection;
 
@@ -13,7 +12,7 @@ export class RetrieveAllSubmissionUseCase {
       const response = await new RetrieveAllSubmissionRepository(this.db).handle(query, options);
 
       return {
-        courses: response.data,
+        submissions: response.data,
         pagination: response.pagination,
       };
     } catch (error) {

@@ -26,12 +26,12 @@ export async function createCollection(db: IDatabaseAdapter) {
       properties: {
         file: {
           bsonType: "string",
-          description: "The file for the course",
+          description: "The file for the submission",
         },
       },
     });
-    // console.info(`[schema] ${collection} - create unique attribute "title"`);
-    // await helper.createUnique(collection, "title");
+    console.info(`[schema] ${collection} - create unique attribute ""`);
+    await helper.createUnique(collection, "");
   } catch (error) {
     throw error;
   }

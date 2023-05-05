@@ -26,12 +26,12 @@ export class UpdateSubmissionRepository {
     return await this.databaseManager.update(id, document, options);
   }
 
-  public async findByUserID(createdBy_id: string, options?: RetrieveOptionsInterface): Promise<ResponseInterface> {
-    const response: any = await this.databaseManager.retrieveAll(
-      { fields: "", filter: { createdBy_id }, page: 1, pageSize: 1, sort: "asc" },
-      options
-    );
+  public async findCreatedById(id: string, options?: RetrieveOptionsInterface): Promise<ResponseInterface> {
+    const response: SubmissionEntityInterface = await this.databaseManager.retrieve(id, options);
 
-    return response.data[0];
+    return {
+      _id: response._id as string,
+      ...response,
+    };
   }
 }

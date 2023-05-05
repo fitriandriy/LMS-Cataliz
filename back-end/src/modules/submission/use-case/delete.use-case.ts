@@ -1,5 +1,10 @@
+import fs from "fs";
 import { DeleteSubmissionRepository } from "../model/repository/delete.repository.js";
-import DatabaseConnection, { DeleteOptionsInterface, RetrieveOptionsInterface } from "@src/database/connection.js";
+import DatabaseConnection, {
+  DeleteOptionsInterface,
+  DocumentInterface,
+  RetrieveOptionsInterface,
+} from "@src/database/connection.js";
 
 export class DeleteSubmissionUseCase {
   private db: DatabaseConnection;
@@ -8,9 +13,24 @@ export class DeleteSubmissionUseCase {
     this.db = db;
   }
 
-  public async handle(id: string, options: DeleteOptionsInterface) {
+  public async handle(document: DocumentInterface, options: DeleteOptionsInterface) {
     try {
-      const response = await new DeleteSubmissionRepository(this.db).handle(id, options);
+      fs.access(document.filename, fs.constants.F_OK, (err) => {
+        if (err) {
+          return new Error("File Not Found");
+        } else {
+          // Delete file if it exists
+          fs.unlink(document.filename, (err) => {
+            if (err) {
+              return new Error("Error deleting file");
+            } else {
+              return "File deleted successfully";
+            }
+          });
+        }
+      });
+
+      const response = await new DeleteSubmissionRepository(this.db).handle(document.id, options);
 
       return {
         acknowledged: response.acknowledged,
@@ -21,10 +41,19 @@ export class DeleteSubmissionUseCase {
     }
   }
 
-  public async findByUserId(userId: string, options?: RetrieveOptionsInterface): Promise<any> {
+  public async findCreatedById(id: string, options?: RetrieveOptionsInterface): Promise<any> {
     try {
-      const response = await new DeleteSubmissionRepository(this.db).findByUserID(userId, options);
-      return response;
+      const response = await new DeleteSubmissionRepository(this.db).findCreatedById(id, options);
+      if (typeof response == "undefined") {
+        return Error("Not found");
+      }
+
+      return {
+        id: response._id,
+        file: response.file,
+        createdBy_id: response.createdBy_id,
+        createdAt: response.createdAt,
+      };
     } catch (error) {
       throw error;
     }

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { UpdateSubmissionUseCase } from "../use-case/update.use-case.js";
+import { UpdatesubmissionUseCase } from "../use-case/update.use-case.js";
 import { db } from "@src/database/database.js";
 
 export const updateController = async (req: Request, res: Response, next: NextFunction) => {
@@ -8,17 +8,15 @@ export const updateController = async (req: Request, res: Response, next: NextFu
 
     db.startTransaction();
 
-    const updateSubmissionUseCase = new UpdateSubmissionUseCase(db);
-    const response = await updateSubmissionUseCase.findByUserId(req.params.userId);
+    const updatesubmissionUseCase = new UpdatesubmissionUseCase(db);
+    const response = await updatesubmissionUseCase.findCreatedById(req.params.id);
 
     if (req.params.userRole !== "student" || req.params.userId !== response.createdBy_id) {
       res.status(401).send("Unauthorized");
     }
-
-    req.body.userRole = req.params.userRole;
-    req.body.userId = req.params.userId;
-
-    await updateSubmissionUseCase.handle(req.params.id, req.body, { session });
+    req.body.old_thumbnail = response.thumbnail;
+    req.body.file = req.file;
+    await updatesubmissionUseCase.handle(req.params.id, req.body, { session });
 
     await db.commitTransaction();
 

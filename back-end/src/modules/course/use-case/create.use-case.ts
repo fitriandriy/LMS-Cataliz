@@ -23,7 +23,6 @@ export class CreateCourseUseCase {
         createdBy_id: document.userId,
         description: document.description,
         prerequisites: document.prerequisites,
-        section: document.section,
         createdAt: new Date(),
       });
 

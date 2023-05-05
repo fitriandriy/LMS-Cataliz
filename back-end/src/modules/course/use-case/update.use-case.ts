@@ -20,7 +20,6 @@ export class UpdateCourseUseCase {
     try {
       // validate request body
       validate(document);
-      console.log(document);
       fs.access(document.old_thumbnail, fs.constants.F_OK, (err) => {
         if (err) {
           return new Error("File Not Found");
@@ -56,7 +55,6 @@ export class UpdateCourseUseCase {
         thumbnail: document.file.path,
         description: document.description,
         prerequisites: document.prerequisites,
-        section: document.section,
         updatedAt: new Date(),
       });
 
