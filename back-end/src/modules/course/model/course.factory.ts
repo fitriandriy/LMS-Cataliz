@@ -8,6 +8,7 @@ import { db } from "@src/database/database.js";
 export default class CourseFactory extends Factory<CourseEntityInterface> {
   definition() {
     return {
+      createdBy_id: faker.name.firstName(),
       title: faker.word.adjective(2),
       description: faker.word.adjective(2),
       prerequisites: faker.word.adjective(2),
