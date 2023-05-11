@@ -6,7 +6,7 @@ import DatabaseConnection, {
 } from "@src/database/connection.js";
 import DatabaseManager from "@src/database/database-manager.js";
 
-export class AggregateCourseRepository {
+export class AggregateDiscussionRepository {
   public databaseManager;
 
   constructor(databaseConnection: DatabaseConnection) {
