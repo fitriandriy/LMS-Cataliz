@@ -13,6 +13,31 @@ export class RetrieveAllCourseUseCase {
       const pipeline = [
         {
           $lookup: {
+            from: "users",
+            localField: "createdBy_id",
+            foreignField: "_id",
+            as: "author",
+          },
+        },
+        {
+          $unwind: {
+            path: "$author",
+            preserveNullAndEmptyArrays: true,
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            let: { user_id: "$author._id" },
+            pipeline: [
+              { $match: { $expr: { $eq: ["$_id", "$$user_id"] } } },
+              { $project: { _id: 1, role: 1, email: 1 } },
+            ],
+            as: "author",
+          },
+        },
+        {
+          $lookup: {
             from: "sections",
             localField: "_id",
             foreignField: "course_id",
@@ -22,16 +47,16 @@ export class RetrieveAllCourseUseCase {
         {
           $unwind: {
             path: "$section",
-            preserveNullAndEmptyArrays: true
-          }
+            preserveNullAndEmptyArrays: true,
+          },
         },
         {
           $lookup: {
             from: "tasks",
             localField: "section._id",
             foreignField: "section_id",
-            as: "section.task"
-          }
+            as: "section.task",
+          },
         },
       ];
       const query = {
