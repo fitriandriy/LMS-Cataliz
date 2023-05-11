@@ -62,7 +62,7 @@ export class AuthUserUseCase {
 
   private generateToken(user: UserEntity): string {
     const payload: TokenPayload = { userId: user._id as string, userRole: user.role as string };
-    const token = jwt.sign(payload, process.env.JWT_SECRET as string, { expiresIn: "1h" });
+    const token = jwt.sign(payload, process.env.JWT_SECRET as string, { expiresIn: "30d" });
     return token;
   }
 
