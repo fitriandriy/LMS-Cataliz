@@ -38,6 +38,20 @@ export class RetrieveAllSectionUseCase {
             preserveNullAndEmptyArrays: true,
           },
         },
+        {
+          $lookup: {
+            from: "lessons",
+            localField: "_id",
+            foreignField: "section_id",
+            as: "lesson",
+          },
+        },
+        {
+          $unwind: {
+            path: "$lesson",
+            preserveNullAndEmptyArrays: true,
+          },
+        },
       ];
       const query = {
         fields: "",

@@ -57,6 +57,14 @@ export class RetrieveAllCourseUseCase {
             as: "section.task",
           },
         },
+        {
+          $lookup: {
+            from: "lessons",
+            localField: "section._id",
+            foreignField: "section_id",
+            as: "section.lesson",
+          },
+        },
       ];
       const query = {
         fields: "",
