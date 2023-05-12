@@ -5,7 +5,6 @@ interface ResponseInterface {
   _id: string;
   section_title?: string;
   description?: string;
-  task_id?: string;
   course_id?: string;
   createdAt?: Date;
 }
@@ -25,7 +24,6 @@ export class RetrieveSectionUseCase {
         _id: response._id,
         section_title: response.section_title,
         description: response.description,
-        task_id: response.task_id,
         course_id: response.course_id,
         createdAt: response.createdAt,
       };

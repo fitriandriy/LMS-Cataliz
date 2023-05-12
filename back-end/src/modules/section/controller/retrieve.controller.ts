@@ -15,7 +15,6 @@ export const retrieveController = async (req: Request, res: Response, next: Next
       id: result._id,
       section_title: result.section_title,
       description: result.description,
-      task_id: result.task_id,
       course_id: result.course_id,
       createdAt: result.createdAt,
     });
