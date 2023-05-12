@@ -1,10 +1,10 @@
 import { objClean } from "@point-hub/express-utils";
-import { UpdateSectionRepository } from "../model/repository/update.repository.js";
-import { SectionEntity } from "../model/section.entity.js";
+import { LessonsEntity } from "../model/lesson.entity.js";
+import { UpdateLessonsRepository } from "../model/repository/update.repository.js";
 import { validate } from "../validation/update.validation.js";
 import DatabaseConnection, { UpdateOptionsInterface, DocumentInterface } from "@src/database/connection.js";
 
-export class UpdateSectionUseCase {
+export class UpdateLessonsUseCase {
   private db: DatabaseConnection;
 
   constructor(db: DatabaseConnection) {
@@ -17,19 +17,19 @@ export class UpdateSectionUseCase {
       validate(document);
 
       // update database
-      const sectionEntity = new SectionEntity({
-        section_title: document.section_title,
+      const lessonsEntity = new LessonsEntity({
+        title: document.title,
+        video_link: document.video_link,
         description: document.description,
         updatedAt: new Date(),
       });
 
-      const sectionRepository = new UpdateSectionRepository(this.db);
-      await sectionRepository.handle(id, objClean(sectionEntity), options);
+      const LessonsRepository = new UpdateLessonsRepository(this.db);
+      await LessonsRepository.handle(id, objClean(lessonsEntity), options);
 
       return {};
     } catch (error) {
       throw error;
     }
   }
-
 }

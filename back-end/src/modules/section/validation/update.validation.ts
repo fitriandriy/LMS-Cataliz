@@ -8,8 +8,7 @@ export const validate = (document: DocumentInterface) => {
     const validation = new Validatorjs(document, {
       deadline: "required",
       description: "required",
-      title: "required",
-      video_link: "required",
+      section_title: "required",
     });
 
     if (validation.fails()) {

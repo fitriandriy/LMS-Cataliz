@@ -8,7 +8,7 @@
 import { IDatabaseAdapter } from "@src/database/connection.js";
 import { MongoDBHelper } from "@src/database/mongodb/mongodb-helper.js";
 
-export const collection = "sections";
+export const collection = "tasks";
 
 export async function createCollection(db: IDatabaseAdapter) {
   try {
@@ -22,15 +22,15 @@ export async function createCollection(db: IDatabaseAdapter) {
     console.info(`[schema] ${collection} - update schema`);
     await db.updateSchema(collection, {
       bsonType: "object",
-      required: ["section_title", "video_link", "description"],
+      required: ["title", "description"],
       properties: {
-        section_title: {
+        title: {
           bsonType: "string",
-          description: "The title for the section",
+          description: "The title for the lesson",
         },
         description: {
           bsonType: "string",
-          description: "The description for the section",
+          description: "The description for the lesson",
         },
       },
     });

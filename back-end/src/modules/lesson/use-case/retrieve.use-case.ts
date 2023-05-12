@@ -1,16 +1,15 @@
-import { RetrieveSectionRepository } from "../model/repository/retrieve.repository.js";
+import { RetrieveLessonsRepository } from "../model/repository/retrieve.repository.js";
 import DatabaseConnection, { RetrieveOptionsInterface } from "@src/database/connection.js";
 
 interface ResponseInterface {
   _id: string;
-  section_title?: string;
+  title?: string;
+  video_link?: string;
   description?: string;
-  task_id?: string;
-  course_id?: string;
   createdAt?: Date;
 }
 
-export class RetrieveSectionUseCase {
+export class RetrieveLessonsUseCase {
   private db: DatabaseConnection;
 
   constructor(db: DatabaseConnection) {
@@ -19,14 +18,13 @@ export class RetrieveSectionUseCase {
 
   public async handle(id: string, options?: RetrieveOptionsInterface): Promise<ResponseInterface> {
     try {
-      const response = await new RetrieveSectionRepository(this.db).handle(id, options);
+      const response = await new RetrieveLessonsRepository(this.db).handle(id, options);
 
       return {
         _id: response._id,
-        section_title: response.section_title,
+        title: response.title,
+        video_link: response.video_link,
         description: response.description,
-        task_id: response.task_id,
-        course_id: response.course_id,
         createdAt: response.createdAt,
       };
     } catch (error) {

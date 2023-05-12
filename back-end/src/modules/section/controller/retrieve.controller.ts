@@ -13,8 +13,7 @@ export const retrieveController = async (req: Request, res: Response, next: Next
 
     res.status(200).json({
       id: result._id,
-      title: result.title,
-      video_link: result.video_link,
+      section_title: result.section_title,
       description: result.description,
       task_id: result.task_id,
       course_id: result.course_id,
