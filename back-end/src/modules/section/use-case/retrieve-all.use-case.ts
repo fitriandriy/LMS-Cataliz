@@ -19,37 +19,11 @@ export class RetrieveAllSectionUseCase {
           },
         },
         {
-          $unwind: {
-            path: "$lesson",
-            preserveNullAndEmptyArrays: true,
-          },
-        },
-        {
           $lookup: {
             from: "tasks",
             localField: "_id",
             foreignField: "section_id",
             as: "task",
-          },
-        },
-        {
-          $unwind: {
-            path: "$task",
-            preserveNullAndEmptyArrays: true,
-          },
-        },
-        {
-          $lookup: {
-            from: "lessons",
-            localField: "_id",
-            foreignField: "section_id",
-            as: "lesson",
-          },
-        },
-        {
-          $unwind: {
-            path: "$lesson",
-            preserveNullAndEmptyArrays: true,
           },
         },
       ];
