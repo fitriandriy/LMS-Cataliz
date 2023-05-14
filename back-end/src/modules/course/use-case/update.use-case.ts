@@ -1,5 +1,6 @@
 import fs from "fs";
 import { objClean } from "@point-hub/express-utils";
+import { doc } from "prettier";
 import { CourseEntity } from "../model/course.entity.js";
 import { UpdateCourseRepository } from "../model/repository/update.repository.js";
 import { validate } from "../validation/update.validation.js";
@@ -20,43 +21,31 @@ export class UpdateCourseUseCase {
     try {
       // validate request body
       validate(document);
-      console.log(document);
-      fs.access(document.old_thumbnail, fs.constants.F_OK, (err) => {
-        if (err) {
-          return new Error("File Not Found");
-        } else {
+      if (typeof document.file !== "undefined") {
+        fs.access(document.old_thumbnail, fs.constants.F_OK, (err) => {
           // Update file if it exists
-          if (document.file) {
-            fs.unlink(document.old_thumbnail, (err) => {
-              if (err) {
-                return new Error("Error deleting file");
-              } else {
-                fs.writeFile(
-                  `uploads/courses/thumbnail/${document.file.filename}`,
-                  document.file.originalname,
-                  (err) => {
-                    if (err) {
-                      return new Error("Error writing file");
-                    } else {
-                      return new Error("File deleted successfully");
-                    }
-                  }
-                );
-              }
-            });
-          } else {
-            return new Error("No file provided");
-          }
-        }
-      });
+          fs.unlink(document.old_thumbnail, (err) => {
+            if (err) {
+              return new Error("Error deleting file");
+            } else {
+              fs.writeFile(`uploads/courses/thumbnail/${document.file.filename}`, document.file.originalname, (err) => {
+                if (err) {
+                  return new Error("Error writing file");
+                } else {
+                  return new Error("File deleted successfully");
+                }
+              });
+            }
+          });
+        });
+      }
 
       // update database
       const courseEntity = new CourseEntity({
         title: document.title,
-        thumbnail: document.file.path,
+        thumbnail: typeof document.file === "undefined" ? document.old_thumbnail : document.file.path,
         description: document.description,
         prerequisites: document.prerequisites,
-        section: document.section,
         updatedAt: new Date(),
       });
 

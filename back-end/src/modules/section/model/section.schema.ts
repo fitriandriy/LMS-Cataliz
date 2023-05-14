@@ -22,15 +22,11 @@ export async function createCollection(db: IDatabaseAdapter) {
     console.info(`[schema] ${collection} - update schema`);
     await db.updateSchema(collection, {
       bsonType: "object",
-      required: ["title", "video_link", "description"],
+      required: ["section_title", "video_link", "description"],
       properties: {
-        title: {
+        section_title: {
           bsonType: "string",
           description: "The title for the section",
-        },
-        video_link: {
-          bsonType: "string",
-          description: "The link video for the section",
         },
         description: {
           bsonType: "string",

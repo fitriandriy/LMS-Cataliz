@@ -1,5 +1,4 @@
 import { AggregateCourseRepository } from "../model/repository/aggregate.repository.js";
-import { RetrieveAllCourseRepository } from "../model/repository/retrieve-all.repository.js";
 import DatabaseConnection, { QueryInterface, RetrieveAllOptionsInterface } from "@src/database/connection.js";
 export class RetrieveAllCourseUseCase {
   private db: DatabaseConnection;
@@ -13,6 +12,31 @@ export class RetrieveAllCourseUseCase {
       const pipeline = [
         {
           $lookup: {
+            from: "users",
+            localField: "createdBy_id",
+            foreignField: "_id",
+            as: "author",
+          },
+        },
+        {
+          $unwind: {
+            path: "$author",
+            preserveNullAndEmptyArrays: true,
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            let: { user_id: "$author._id" },
+            pipeline: [
+              { $match: { $expr: { $eq: ["$_id", "$$user_id"] } } },
+              { $project: { _id: 1, username:1, role: 1, email: 1 } },
+            ],
+            as: "author",
+          },
+        },
+        {
+          $lookup: {
             from: "sections",
             localField: "_id",
             foreignField: "course_id",
@@ -22,16 +46,24 @@ export class RetrieveAllCourseUseCase {
         {
           $unwind: {
             path: "$section",
-            preserveNullAndEmptyArrays: true
-          }
+            preserveNullAndEmptyArrays: true,
+          },
         },
         {
           $lookup: {
             from: "tasks",
             localField: "section._id",
             foreignField: "section_id",
-            as: "section.task"
-          }
+            as: "section.task",
+          },
+        },
+        {
+          $lookup: {
+            from: "lessons",
+            localField: "section._id",
+            foreignField: "section_id",
+            as: "section.lesson",
+          },
         },
       ];
       const query = {
@@ -42,7 +74,6 @@ export class RetrieveAllCourseUseCase {
         sort: "",
       };
       const aggregate = await new AggregateCourseRepository(this.db).aggregate(pipeline, query, options);
-      // const response = await new RetrieveAllCourseRepository(this.db).handle(query, options);
 
       return {
         courses: aggregate.data,

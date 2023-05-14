@@ -1,16 +1,6 @@
-import { RetrieveCourseRepository } from "../model/repository/retrieve.repository.js";
+import mongoose from "mongoose";
+import { AggregateCourseRepository } from "../model/repository/aggregate.repository.js";
 import DatabaseConnection, { RetrieveOptionsInterface } from "@src/database/connection.js";
-
-interface ResponseInterface {
-  _id: string;
-  title?: string;
-  thumbnail?: string;
-  description?: string;
-  prerequisites?: string;
-  section?: string;
-  createdBy_id?: string;
-  createdAt?: Date;
-}
 
 export class RetrieveCourseUseCase {
   private db: DatabaseConnection;
@@ -19,19 +9,48 @@ export class RetrieveCourseUseCase {
     this.db = db;
   }
 
-  public async handle(id: string, options?: RetrieveOptionsInterface): Promise<ResponseInterface> {
+  public async handle(id: string, options?: RetrieveOptionsInterface) {
     try {
-      const response = await new RetrieveCourseRepository(this.db).handle(id, options);
+      const pipeline = [
+        {
+          $match: {
+            _id: new mongoose.Types.ObjectId(id),
+          },
+        },
+        {
+          $lookup: {
+            from: "sections",
+            localField: "_id",
+            foreignField: "course_id",
+            as: "section",
+          },
+        },
+        {
+          $unwind: {
+            path: "$section",
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $lookup: {
+            from: "tasks",
+            localField: "section._id",
+            foreignField: "section_id",
+            as: "section.task"
+          }
+        },
+      ];
+      const query = {
+        fields: "",
+        filter: {},
+        page: 1,
+        pageSize: 10,
+        sort: "",
+      };
+      const aggregate = await new AggregateCourseRepository(this.db).aggregate(pipeline, query, options);
 
       return {
-        _id: response._id,
-        title: response.title,
-        thumbnail: response.thumbnail,
-        description: response.description,
-        prerequisites: response.prerequisites,
-        section: response.section,
-        createdBy_id: response.createdBy_id,
-        createdAt: response.createdAt,
+        course: aggregate.data,
       };
     } catch (error) {
       throw error;

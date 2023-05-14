@@ -5,11 +5,11 @@ import { db } from "@src/database/database.js";
 
 export const retrieveAllController = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const createCourseUseCase = new RetrieveAllSubmissionUseCase(db);
-    const result = await createCourseUseCase.handle(req.query as unknown as QueryInterface);
+    const retrieveAllSubmissionUseCase = new RetrieveAllSubmissionUseCase(db);
+    const result = await retrieveAllSubmissionUseCase.handle(req.query as unknown as QueryInterface);
 
     res.status(200).json({
-      courses: result.courses,
+      submissions: result.submissions,
       pagination: result.pagination,
     });
   } catch (error) {

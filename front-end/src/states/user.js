@@ -4,7 +4,10 @@ import axios from "axios"
 export const useUserStore = defineStore("user", {
     state: () => ({
         user: {
+          _id: null,
           name: null,
+          email: null,
+          role: null
         },
     }),
     getters: {
@@ -12,18 +15,18 @@ export const useUserStore = defineStore("user", {
           return state.user
         }
     },
-    actions: {
-      async fetchUser() {
-        try {
-            const response = await axios.get('https://jsonplaceholder.typicode.com/users/1')
-            this.user.name = response.data.name;
-          }
-          catch (error) {
-            alert(error)
-            console.log(error)
-        }
-      }
-    },
+    // actions: {
+    //   async fetchUser() {
+    //     try {
+    //         const response = await axios.get('https://jsonplaceholder.typicode.com/users/1')
+    //         this.user.name = response.data.name;
+    //       }
+    //       catch (error) {
+    //         alert(error)
+    //         console.log(error)
+    //     }
+    //   }
+    // },
 })
 
 // axios.get('http://localhost:3000/users')

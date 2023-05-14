@@ -8,11 +8,7 @@ export const retrieveController = async (req: Request, res: Response, next: Next
     const result = await retrieveDiscussionUseCase.handle(req.params.id);
 
     res.status(200).json({
-      _id: result._id,
-      course_id: result.course_id,
-      comment: result.comment,
-      createdBy_id: result.createdBy_id,
-      createdAt: result.createdAt,
+      discussion: result.discussion,
     });
   } catch (error) {
     next(error);

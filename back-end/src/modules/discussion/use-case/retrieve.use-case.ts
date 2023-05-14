@@ -1,13 +1,7 @@
-import { RetrieveDiscussionRepository } from "../model/repository/retrieve.repository.js";
+import mongoose from "mongoose";
+import { AggregateDiscussionRepository } from "../model/repository/aggregate.repository.js";
 import DatabaseConnection, { RetrieveOptionsInterface } from "@src/database/connection.js";
 
-interface ResponseInterface {
-  _id: string;
-  comment?: string;
-  course_id?: string;
-  createdBy_id?: string;
-  createdAt?: Date;
-}
 
 export class RetrieveDiscussionUseCase {
   private db: DatabaseConnection;
@@ -16,16 +10,52 @@ export class RetrieveDiscussionUseCase {
     this.db = db;
   }
 
-  public async handle(id: string, options?: RetrieveOptionsInterface): Promise<ResponseInterface> {
+  public async handle(id: string, options?: RetrieveOptionsInterface) {
     try {
-      const response = await new RetrieveDiscussionRepository(this.db).handle(id, options);
+      const pipeline = [
+        {
+          $match: {
+            _id: new mongoose.Types.ObjectId(id),
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "createdBy_id",
+            foreignField: "_id",
+            as: "user",
+          },
+        },
+        {
+          $unwind: {
+            path: "$user",
+            preserveNullAndEmptyArrays: true
+          }
+        },
+        {
+          $lookup: {
+            from: "users",
+            let: { user_id: "$user._id" },
+            pipeline: [
+              { $match: { $expr: { $eq: ["$_id", "$$user_id"] } } },
+              { $project: { _id: 1, username:1, role: 1, email: 1 } },
+            ],
+            as: "user",
+          },
+        },
+      ];
+      const query = {
+        fields: "",
+        filter: {},
+        page: 1,
+        pageSize: 10,
+        sort: "",
+      };
+      const aggregate = await new AggregateDiscussionRepository(this.db).aggregate(pipeline, query, options);
 
       return {
-        _id: response._id,
-        comment: response.comment,
-        course_id: response.course_id,
-        createdBy_id: response.createdBy_id,
-        createdAt: response.createdAt,
+        discussion: aggregate.data,
+
       };
     } catch (error) {
       throw error;

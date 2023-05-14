@@ -6,34 +6,78 @@
         <h2 class="font-bold text-xl mb-2">Edit Course</h2>
         <Vbutton :buttonNames="'HAPUS COURSE'" class="bg-[red]" />
       </header>
-      <form action="" class="flex flex-col">
+      <form @submit.prevent="update()" class="flex flex-col">
         <label>Judul Course (100 Karakter)</label>
-        <Vinput :type="'text'" class="mb-4" />
+        <input v-model="course.title" type="text" class="py-[4px] px-2 rounded-lg border border-[#777777] outline-none mb-4" />
         <label>Deskripsi</label>
-        <textarea class="mb-4 px-2 rounded-lg border border-[#777777] outline-none" rows="4" cols="50"></textarea>
+        <textarea v-model="course.description" class="mb-4 px-2 rounded-lg border border-[#777777] outline-none" rows="4" cols="50"></textarea>
         <label>Thumbnail (jpg/jpeg/png)</label>
-        <Vinput :type="'file'" class="mb-4" />
+        <input type="file" class="mb-4 rounded-lg border border-[#777777] outline-none" />
         <label>Prerequisites</label>
-        <Vinput :type="'text'" class="mb-2" />
-        <Vinput :type="'text'" class="mb-2" />
-        <Vinput :type="'text'" class="mb-2" />
-        <Vbutton :buttonNames="'TAMBAH KOLOM'" class="w-[155px]" />
+        <input v-model="course.prerequisites" type="text" class="py-[4px] px-2 rounded-lg border border-[#777777] outline-none mb-4" />
+        <button class="text-white px-4 py-[5px] rounded-lg bg-[#02BC7D] w-[155px]">SIMPAN</button>
       </form>
     </div>
   </div>
-  <Vbutton :buttonNames="'SIMPAN'" class="w-[100px] ml-[15px] md:ml-[50px] lg:ml-[270px] mb-10" />
 </template>
 
-<script>
+<script setup lang="ts">
+import axios from 'axios';
+import { onMounted, reactive } from 'vue';
 import Navigation from '../components/Navigation.vue';
-import Vinput from '../components/Input.vue';
 import Vbutton from '../components/Button.vue';
+import { useRouter, useRoute } from 'vue-router';
 
-export default {
-    components: {
-        Navigation,
-        Vinput,
-        Vbutton,
-    }
+let course = reactive({
+    title: '',
+    description: '',
+    prerequisites: '',
+    createdBy_id: '',
+    thumbnail: '',
+});
+
+const token = localStorage.getItem("accessToken");
+const config = {
+    headers: { Authorization: `Bearer ${token}` }
+};
+
+const route = useRoute();
+const router = useRouter();
+
+const update = () => {
+  axios.patch(
+        `http://localhost:3000/courses/${route.params.id}`,
+        {
+          title: course.title,
+          description: course.description,
+          prerequisites: course.prerequisites,
+        },
+        config
+    ).then((result) => {
+        alert('Data berhasil diupdate!');
+        router.push({
+          name: 'course',
+          params: {id: route.params.id}
+        });
+    }).catch((err) => {
+      console.log(err)
+        alert(err);
+    });
 }
+
+onMounted( async () => {
+    axios.get(
+      `http://localhost:3000/courses/${route.params.id}`,
+      config)
+    .then((result) => {
+      course.title = result.data.course[0].title;
+      course.description = result.data.course[0].description;
+      course.prerequisites = result.data.course[0].prerequisites;
+      course.createdBy_id = result.data.course[0].createdBy_id;
+      course.thumbnail = result.data.course[0].thumbnail;
+    }).catch((err) => {
+      console.log(err.response);
+    });
+});
+
 </script>

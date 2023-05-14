@@ -37,6 +37,18 @@ const routes = [
       component: () => import('../views/EditSection.vue')
   },
   {
+    //   path: '/course/:id/section/:sectionId/create-lesson',
+      path: '/course/:id/create-lesson',
+      name: 'create-lesson',
+      component: () => import('../views/CreateLesson.vue')
+  },
+  {
+    //   path: '/course/:id/section/:sectionId/create-lesson',
+      path: '/course/:id/create-task',
+      name: 'create-task',
+      component: () => import('../views/CreateTask.vue')
+  },
+  {
       path: '/course/:id/create-section',
       name: 'create-section',
       component: () => import('../views/CreateSection.vue')
@@ -68,51 +80,12 @@ const router = createRouter({
   routes
 });
 
-// const router = createRouter({
-//   history: createWebHistory(import.meta.env.BASE_URL),
-//   routes: [
-//     {
-//       path: "/",
-//       name: "home",
-//       component: HomeView,
-//       meta: {
-//         title: "Home",
-//       },
-//     },
-//     {
-//       path: "/weather/:state/:city",
-//       name: "cityView",
-//       component: CityView,
-//       meta: {
-//         title: "Weather",
-//       },
-//     },
-//     {
-//       path: "/signIn",
-//       name: "signIn",
-//       component: SignInView,
-//       meta: {
-//         title: "Register",
-//       },
-//     },
-//     {
-//       path: "/logIn",
-//       name: "logIn",
-//       component: LoginView,
-//       meta: {
-//         title: "Masuk",
-//       },
-//     },
-//   ],
-// });
-
-// router.beforeEach((to, from, next) => {
-//   document.title = `${
-//     to.params.state
-//       ? `${to.params.city}, ${to.params.state}`
-//       : to.meta.title
-//   } | The Local Weather`;
-//   next();
-// });
+router.beforeEach((to, from, next) => {
+    const isAuthenticated = JSON.parse(localStorage.getItem("authenticated"));
+    if (to.name !== "login" && to.name !== "signin" && !isAuthenticated) next({name: "login"});
+    if (to.name === "login" && isAuthenticated) next({name: "home"});
+    if (to.name === "signin" && isAuthenticated) next({name: "home"});
+    else next();
+})
 
 export default router;

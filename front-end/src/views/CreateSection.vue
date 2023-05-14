@@ -1,20 +1,22 @@
 <template>
   <Navigation />
-  <div class="font-Roboto text-[#535353] mx-4 md:mx-[150px] lg:mx-[270px] mt-4 lg:mt-9 mb-2">
+  <div class="font-Roboto text-[#535353] mx-4 md:mx-[150px] lg:mx-[300px] mt-4 lg:mt-9 mb-2">
     <h2 class="font-bold text-xl mb-2">Buat Section</h2>
-    <form action="" class="flex flex-col">
+    <form @submit.prevent="onCreateSection()" class="flex flex-col">
       <label>Judul Section (100 Karakter)</label>
-      <Vinput :type="'text'" class="mb-4" />
+      <input v-model="section.section_title" class="mb-4 rounded border border-gray-400 p-1" type="text" id="title">
+      <textarea v-model="section.description" class="mb-4 px-2 rounded-lg border border-[#777777] outline-none" rows="4" cols="50"></textarea>
+      <Vbutton :buttonNames="'BUAT SECTION'" class="h-10 font-medium md:w-[145px] mb-10" />
     </form>
   </div>
-  <div class="flex justify-between font-Roboto text-[#535353] mx-4 md:mx-[150px] lg:mx-[270px] mt-4 my-2">
+  <!-- <div class="flex justify-between font-Roboto text-[#535353] mx-4 md:mx-[150px] lg:mx-[270px] mt-4 my-2">
     <h2 class="font-bold text-xl mb-2">Sections</h2>
     <div class="flex justify-end">
       <Vbutton :buttonNames="'+ MATERI'" />
       <Vbutton :buttonNames="'+ TUGAS'" class="ml-2 md:ml-[20px]" />
     </div>
-  </div>
-  <div class="font-Roboto text-[#535353] mx-4 md:mx-[150px] lg:mx-[270px] mt-4 border border-[#cccccf] rounded-lg mb-4">
+  </div> -->
+  <!-- <div class="font-Roboto text-[#535353] mx-4 md:mx-[150px] lg:mx-[270px] mt-4 border border-[#cccccf] rounded-lg mb-4">
     <div class="pt-[20px] px-[10px] lg:px-[50px] pb-[20px] mb-[5px]">
       <header class="flex justify-between">
         <h2>1. Video Materi</h2>
@@ -29,8 +31,8 @@
         <Vinput :type="'text'" />
       </form>
     </div>
-  </div>
-  <div class="font-Roboto text-[#535353] mx-4 md:mx-[150px] lg:mx-[270px] mt-4 lg:mt-9 border border-[#cccccf] rounded-lg mb-4">
+  </div> -->
+  <!-- <div class="font-Roboto text-[#535353] mx-4 md:mx-[150px] lg:mx-[270px] mt-4 lg:mt-9 border border-[#cccccf] rounded-lg mb-4">
     <div class="pt-[20px] px-[10px] lg:px-[50px] pb-[20px]">
       <header class="flex justify-between">
         <h2>2. Tugas</h2>
@@ -48,20 +50,46 @@
         <Vbutton :buttonNames="'TAMBAH KOLOM'" class="w-[155px]" />
       </form>
     </div>
-  </div>
-  <Vbutton :buttonNames="'BUAT SECTION'" class="h-10 font-medium md:w-[145px] ml-4 md:ml-[150px] lg:ml-[270px] mb-10" />
+  </div> -->
 </template>
 
-<script>
+<script setup lang="ts">
 import Navigation from '../components/Navigation.vue';
-import Vinput from '../components/Input.vue';
 import Vbutton from '../components/Button.vue';
+import { reactive } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import axios from 'axios';
 
-export default {
-    components: {
-        Navigation,
-        Vinput,
-        Vbutton,
+const router = useRouter();
+const route = useRoute();
+
+let section = reactive({
+  section_title: '',
+  course_id: route.params.id,
+  description: ''
+})
+
+const token = localStorage.getItem("accessToken");
+const config = {
+  headers: { Authorization: `Bearer ${token}` }
+};
+
+function onCreateSection() {
+  axios.post(
+    `http://localhost:3000/courses/${route.params.id}/sections`,
+    section,
+    config
+  ).then((result) => {
+    if (result) {
+      alert(`Section successfuly created!`)
     }
+
+    router.push({
+      name: 'course',
+      params: {id: route.params.id}
+    });
+  }).catch((err) => {
+    alert(`${err}`)
+  });
 }
 </script>

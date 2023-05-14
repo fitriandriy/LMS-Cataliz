@@ -16,16 +16,15 @@ export class CreateSubmissionUseCase {
       validate(document);
 
       // save to database
-      const courseEntity = new SubmissionEntity({
-        file: document.file,
+      const submissionEntity = new SubmissionEntity({
         student_note: document.student_note,
-        createdBy_id: document.userId,
         task_id: document.task_id,
-        report: document.report,
+        file: document.file,
+        createdBy_id: document.userId,
         createdAt: new Date(),
       });
 
-      const response = await new CreateSubmissionRepository(this.db).handle(courseEntity, options);
+      const response = await new CreateSubmissionRepository(this.db).handle(submissionEntity, options);
 
       return {
         acknowledged: response.acknowledged,

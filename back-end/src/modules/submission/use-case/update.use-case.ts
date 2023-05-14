@@ -1,3 +1,4 @@
+import fs from "fs";
 import { objClean } from "@point-hub/express-utils";
 import { UpdateSubmissionRepository } from "../model/repository/update.repository.js";
 import { SubmissionEntity } from "../model/submission.entity.js";
@@ -8,7 +9,7 @@ import DatabaseConnection, {
   RetrieveOptionsInterface,
 } from "@src/database/connection.js";
 
-export class UpdateSubmissionUseCase {
+export class UpdatesubmissionUseCase {
   private db: DatabaseConnection;
 
   constructor(db: DatabaseConnection) {
@@ -19,19 +20,40 @@ export class UpdateSubmissionUseCase {
     try {
       // validate request body
       validate(document);
+      fs.access(document.old_thumbnail, fs.constants.F_OK, (err) => {
+        if (err) {
+          return new Error("File Not Found");
+        } else {
+          // Update file if it exists
+          if (document.file) {
+            fs.unlink(document.old_thumbnail, (err) => {
+              if (err) {
+                return new Error("Error deleting file");
+              } else {
+                fs.writeFile(`uploads/file/${document.file.filename}`, document.file.originalname, (err) => {
+                  if (err) {
+                    return new Error("Error writing file");
+                  } else {
+                    return new Error("File deleted successfully");
+                  }
+                });
+              }
+            });
+          } else {
+            return new Error("No file provided");
+          }
+        }
+      });
 
       // update database
       const submissionEntity = new SubmissionEntity({
-        file: document.file,
         student_note: document.student_note,
-        createdBy_id: document.userId,
-        task_id: document.task_id,
-        report: document.report,
+        file: document.file.path,
         updatedAt: new Date(),
       });
 
-      const submissionRepository = new UpdateSubmissionRepository(this.db);
-      await submissionRepository.handle(id, objClean(submissionEntity), options);
+      const submisisonRepository = new UpdateSubmissionRepository(this.db);
+      await submisisonRepository.handle(id, objClean(submissionEntity), options);
 
       return {};
     } catch (error) {
@@ -39,10 +61,19 @@ export class UpdateSubmissionUseCase {
     }
   }
 
-  public async findByUserId(userId: string, options?: RetrieveOptionsInterface): Promise<any> {
+  public async findCreatedById(id: string, options?: RetrieveOptionsInterface): Promise<any> {
     try {
-      const response = await new UpdateSubmissionRepository(this.db).findByUserID(userId, options);
-      return response;
+      const response = await new UpdateSubmissionRepository(this.db).findCreatedById(id, options);
+      if (typeof response == "undefined") {
+        return Error("Not found");
+      }
+
+      return {
+        id: response._id,
+        file: response.file,
+        createdBy_id: response.createdBy_id,
+        createdAt: response.createdAt,
+      };
     } catch (error) {
       throw error;
     }

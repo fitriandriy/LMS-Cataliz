@@ -3,10 +3,8 @@ import DatabaseConnection, { RetrieveOptionsInterface } from "@src/database/conn
 
 interface ResponseInterface {
   _id: string;
-  title?: string;
+  section_title?: string;
   description?: string;
-  video_link?: string;
-  task_id?: string;
   course_id?: string;
   createdAt?: Date;
 }
@@ -24,10 +22,8 @@ export class RetrieveSectionUseCase {
 
       return {
         _id: response._id,
-        title: response.title,
-        video_link: response.video_link,
+        section_title: response.section_title,
         description: response.description,
-        task_id: response.task_id,
         course_id: response.course_id,
         createdAt: response.createdAt,
       };

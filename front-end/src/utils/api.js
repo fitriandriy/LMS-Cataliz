@@ -45,14 +45,14 @@ const api = (() => {
     return user;
   }
 
-  async function login({ id, password }) {
-    const response = await fetch(`${BASE_URL}/login`, {
+  async function login({ username, password }) {
+    const response = await fetch(`${BASE_URL}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        id,
+        username,
         password,
       }),
     });

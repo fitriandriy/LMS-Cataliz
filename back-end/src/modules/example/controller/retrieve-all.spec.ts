@@ -3,7 +3,7 @@ import request from "supertest";
 import { ExampleStatusTypes } from "../model/example.entity";
 import ExampleFactory from "../model/example.factory";
 import { createApp } from "@src/app.js";
-import { resetDatabase } from "@src/test/utils.js";
+import { resetDatabase, retrieveAll } from "@src/test/utils.js";
 
 describe("retrieve all examples", () => {
   beforeEach(async () => {

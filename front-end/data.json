@@ -1,0 +1,37 @@
+{
+  "_id": {
+    "$oid": "644aa0baf456637085f7fb51"
+  },
+  "title": "Belajar Fundamental Front End Web Development",
+  "thumbnail": "https://randombig.cat/b7a2f656-0b0c-4afd-91cc-33bccc070beb.jpg",
+  "createdBy_id": {
+    "$oid": "6444ddbe43039aa6fdb8dbda"
+  },
+  "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure facere ut autem beatae exercitationem repellendus ducimus in aliquam voluptates enim? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum iure vitae voluptates ipsam repudiandae soluta saepe excepturi rem quis? Quia?",
+  "prerequisites": "HTML, CSS, Javascript Dasar",
+  "section": [
+    {
+      "_id": {
+        "$oid": "644aa0baf456637085f7fb51"
+      },
+      "section_title": "Belajar Fundamental Javascript",
+      "video_link": "https://www.youtube.com/watch?v=WECnWYssotY&ab_channel=DeaAfrizal",
+      "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure facere ut autem beatae exercitationem repellendus ducimus in aliquam voluptates enim? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum iure vitae voluptates ipsam repudiandae soluta saepe excepturi rem quis? Quia?",
+      "task": [
+        {
+          "_id": {
+            "$oid": "644aa0baf456637085f7fb52"
+          },
+          "deadline": "2023-04-29T13:49:00.913Z",
+          "createdAt": "2023-04-27T13:49:00.913Z",
+          "description":"Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure facere ut autem beatae exercitationem repellendus ducimus in aliquam voluptates enim? Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nostrum iure vitae voluptates ipsam repudiandae soluta saepe excepturi rem quis? Quia?",
+          "criteria": [
+            "Implement CRUD using localStorage", "Responsive design"
+          ]
+        }
+      ]
+    }
+  ],
+  "createdAt": "2023-04-27T13:49:00.913Z",
+  "updatedAt": "2023-04-27T13:49:00.913Z"
+}

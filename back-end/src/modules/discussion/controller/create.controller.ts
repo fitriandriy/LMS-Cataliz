@@ -6,6 +6,9 @@ export const createController = async (req: Request, res: Response, next: NextFu
   try {
     const course_id = req.baseUrl.split("/");
     req.body.course_id = course_id[2];
+    
+    req.body.userId = req.params.userId;
+
     const session = db.startSession();
 
     db.startTransaction();

@@ -18,9 +18,8 @@ export class UpdateSectionUseCase {
 
       // update database
       const sectionEntity = new SectionEntity({
-        title: document.title,
+        section_title: document.section_title,
         description: document.description,
-        video_link: document.video_link,
         updatedAt: new Date(),
       });
 

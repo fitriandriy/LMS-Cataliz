@@ -27,7 +27,7 @@
                         </div>
                         <div class="px-4 pb-4">
                             <h2 class="font-semibold">{{ course.title }}</h2>
-                            <p class="mt-3">{{ course.createdBy_id }}</p>
+                            <p class="mt-3">Created by: {{ course.author[0].username }}</p>
                         </div>
                     </div>
                 </router-link>
@@ -39,24 +39,48 @@
 <script setup>
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 import Navigation from '../components/Navigation.vue';
 import Vbutton from '../components/Button.vue';
 import Vinput from '../components/Input.vue';
-
 import { useUserStore } from '../states/user';
 const userStore = useUserStore();
 
-
-
 let courseList = ref([]);
 
+const token = localStorage.getItem("accessToken");
+const username = localStorage.getItem("username");
+const config = {
+    headers: { Authorization: `Bearer ${token}` }
+};
+
 onMounted( async () => {
-    await userStore.fetchUser();
-    axios.get('http://localhost:3000/courses')
+    axios.get(
+        'http://localhost:3000/courses',
+        config)
     .then((result) => {
         courseList.value = result.data.courses;
     }).catch((err) => {
         console.log(err.response);
+    });
+
+    axios.get(
+        `http://localhost:3000/auth/user/${username}`,
+        config
+    ).then((result) => {
+        userStore.$state.user._id = result.data._id;
+        userStore.$state.user.name = result.data.username;
+        userStore.$state.user.email = result.data.email;
+        userStore.$state.user.role = result.data.role;
+    }).catch((err) => {
+        if (err == 'AxiosError: Request failed with status code 401') {
+            localStorage.setItem("authenticated", "false");
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("username");
+            router.push({ name: "login" });
+        }
+        alert(err);
     });
 });
 

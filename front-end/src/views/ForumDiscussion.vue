@@ -14,10 +14,10 @@
             <!-- ADD DISCUSSION -->
             <div class="md:col-start-1 md:col-end-3 rounded-sm mb-5">
                 <Vbutton class="w-full" :buttonNames="'Buat Diskusi Baru'" />
-                <div>
+                <form @submit.prevent="onCreateDiscussion()">
                     <textarea class="rounded-lg border border-[#777777] outline-none mt-2 p-2 h-28 md:h-[200px] w-full" name="" id="" rows="10" placeholder="Tulis di sini.."></textarea><br>
                     <Vbutton :buttonNames="'Buat Diskusi'" />
-                </div>
+                </form>
             </div>
             <div class="md:col-start-3 md:col-end-7">
                 <div class="flex justify-end">
@@ -25,18 +25,11 @@
                     <Vbutton :buttonNames="'CARI'" />
                 </div>
                 <div class="border border-[#777777] rounded-lg mt-2 p-5">
-                    <router-link :to="{ name: 'discussion-detile', params: {id: 1} }">
+                    <router-link v-for="(discussion) in discussions" :key="discussion._id"  :to="{ name: 'discussion-detile', params: {id: discussion._id} }">
                         <div class="bg-[#F4F4F5] p-5 rounded-lg mb-4">
-                            <h2 class="font-semibold">Fitri Andriyani - <span class="text-[#02BC7D]">Fasilitator</span></h2>
-                            <p>19.30 WIB - 8 Januari 2023</p>
-                            <p class="mt-5">Lorem ipsum dolor sit amet consectetur adipiscing elit Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris. Maecenas vitae mattis tellus..</p>
-                        </div>
-                    </router-link>
-                    <router-link :to="{ name: 'discussion-detile', params: {id: 2} }">
-                        <div class="bg-[#F4F4F5] p-5 rounded-lg mb-4">
-                            <h2 class="font-semibold">Fitri Andriyani - <span class="text-[#02BC7D]">Fasilitator</span></h2>
-                            <p>19.30 WIB - 8 Januari 2023</p>
-                            <p class="mt-5">Lorem ipsum dolor sit amet consectetur adipiscing elit Ut et massa mi. Aliquam in hendrerit urna. Pellentesque sit amet sapien fringilla, mattis ligula consectetur, ultrices mauris. Maecenas vitae mattis tellus..</p>
+                            <h2 class="font-semibold">{{ discussion.createdBy_id }} - <span class="text-[#02BC7D]">Fasilitator</span></h2>
+                            <p>{{ discussion.createdAt }}</p>
+                            <p class="mt-5">{{ discussion.comment }}</p>
                         </div>
                     </router-link>
                 </div>
@@ -45,16 +38,39 @@
     </div>
 </template>
 
-<script>
+<script setup lang="">
+import axios from 'axios';
+import { onMounted, reactive, ref } from 'vue';
 import Navigation from '../components/Navigation.vue';
 import Vinput from '../components/Input.vue';
 import Vbutton from '../components/Button.vue';
+import { useRoute } from 'vue-router';
 
-export default {
-    components: {
-        Navigation,
-        Vinput,
-        Vbutton
-    }
-}
+let discussions = ref([]);
+
+const token = localStorage.getItem("accessToken");
+const config = {
+    headers: { Authorization: `Bearer ${token}` }
+};
+
+const route = useRoute();
+
+onMounted( async () => {
+    axios.get(
+      `http://localhost:3000/courses/${route.params.id}/discussions`,
+      config)
+    .then((result) => {
+      discussions.value = result.data.discussions;
+    }).catch((err) => {
+      console.log(err.response);
+    });
+});
+
+// export default {
+//     components: {
+//         Navigation,
+//         Vinput,
+//         Vbutton
+//     }
+// }
 </script>
