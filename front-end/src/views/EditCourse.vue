@@ -4,7 +4,7 @@
     <div class="pt-[20px] px-[10px] md:px-[50px] pb-[20px]">
       <header class="flex justify-between mb-4 md:mb-0">
         <h2 class="font-bold text-xl mb-2">Edit Course</h2>
-        <Vbutton :buttonNames="'HAPUS COURSE'" class="bg-[red]" />
+        <button @click="onDelete()" class="text-white px-4 py-[5px] rounded-lg bg-[red]">HAPUS COURSE</button>
       </header>
       <form @submit.prevent="update()" class="flex flex-col">
         <label>Judul Course (100 Karakter)</label>
@@ -25,7 +25,6 @@
 import axios from 'axios';
 import { onMounted, reactive } from 'vue';
 import Navigation from '../components/Navigation.vue';
-import Vbutton from '../components/Button.vue';
 import { useRouter, useRoute } from 'vue-router';
 
 let course = reactive({
@@ -62,6 +61,24 @@ const update = () => {
     }).catch((err) => {
       console.log(err)
         alert(err);
+    });
+}
+
+const onDelete = () => {
+  confirm('Hapus course?') ? deleteCourse() : console.log('') ;
+}
+
+const deleteCourse = () => {
+  axios.delete(
+      `http://localhost:3000/courses/${route.params.id}`,
+      config)
+    .then((result) => {
+      alert('Course berhasil dihapus.');
+      router.push({
+        name: 'home'
+      })
+    }).catch((err) => {
+      console.log(err.response);
     });
 }
 

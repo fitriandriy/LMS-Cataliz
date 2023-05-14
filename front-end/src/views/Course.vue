@@ -46,11 +46,6 @@
                         <h2 class="font-bold text-base md:text-lg">{{course.section.indexOf(data)+1 + '. ' + data.section_title }}</h2>
                         <button @click="handleClick(course.section.indexOf(data))" class="mr-4 ml-2 p-1"><img :class="handleRotate(course.section.indexOf(data))" class="w-[25px] md:w-[20px] mb-3 md:pb-1 mt-[2px] transform transition-transform duration-500" src="/arrow-to-show.png" alt=""></button>
                     </header>
-                    <!-- <div v-if="userStore.$state.user.role === 'facilitator'">
-                        <Router-link :to="{ name: 'edit-section', params: { id: data.course_id, sectionId: data._id} }">
-                            <button class="w-[25px] mr-[20px] md:w-[30px] md:mr-[50px]"><img src="/edit.png" alt="edit icon"></button>
-                        </Router-link>
-                    </div> -->
                 </div>
                 <div>
                     <div :style="handleToggle(course.section.indexOf(data))" class="max-h-0 overflow-auto duration-500 transition-all">
@@ -67,7 +62,7 @@
                         <div v-for="(lesson) in data.lesson" :key="lesson._id" class="flex my-4 px-5">
                             <img class="w-[20px] h-[20px] mr-2" src="/video.png" alt="video icon">
                             <div>
-                                <a href="{{ lesson.video_link }}" class="text-blue-600 underline">{{ lesson.title }}</a>
+                                <a :href="`${lesson.video_link}`" target="_blank" class="text-blue-600 underline">{{ lesson.title }}</a>
                                 <p class="my-4 w-full">{{ lesson.description }}</p>
                             </div>
                         </div>
@@ -102,7 +97,7 @@
 <script setup lang="ts">
 
 import axios from 'axios';
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import * as dayjs from 'dayjs';
 import { ref, onMounted, reactive } from 'vue';
 import Navigation from '../components/Navigation.vue';
@@ -114,9 +109,7 @@ const courseStore = useCourseStore();
 
 const tab = ref([false, false]);
 
-// digunakan untuk mendapatkan id dari url
 const route = useRoute();
-const router = useRouter();
 
 const handleClick = (index: number) => {
   tab.value[index] = !tab.value[index];
@@ -191,11 +184,8 @@ onMounted( async () => {
         course.prerequisites = result.data.course[0].prerequisites;
         course.createdBy_id = result.data.course[0].createdBy_id;
         course.thumbnail = result.data.course[0].thumbnail;
-        // console.log(`THUMBNAIL ${JSON.stringify(result)}`)
-        // console.log(`THUMBNAIL ${JSON.stringify(result.data.course[0].section)}`)
-        // console.log(`TITLE ${result.data.course[0].section}`)
     }).catch((err) => {
-        console.log(err.response);
+        alert(err.response);
     });
 
     const check = (data) => {
@@ -207,11 +197,6 @@ onMounted( async () => {
         config)
     .then((result) => {
         course.section = result.data.sections.filter(check);
-        // course.section = result.data.sections;
-        // console.log(`THUMBNAIL ${course.section}`)
-        console.log(`THUMBNAIL ${JSON.stringify(course.section)}`)
-        // console.log(`THUMBNAIL ${JSON.stringify(data.course[0].section[0].lesson[0])}`)
-        // console.log(`TITLE ${result.data.course[0].section}`)
     }).catch((err) => {
         console.log(err.response);
     });

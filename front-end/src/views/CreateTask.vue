@@ -47,19 +47,12 @@ const config = {
   headers: { Authorization: `Bearer ${token}` }
 };
 
-let dataJudul: string[] = [];
 onMounted( async () => {
   axios.get(
     `http://localhost:3000/courses/${route.params.id}/sections`,
     config
   ).then((result) => {
     section = result.data.sections;
-    console.log(`SECTION ${JSON.stringify(section)}`);
-    // result.data.sections.forEach((element: object) => {
-    //   section.push(element);
-    // });
-    // console.log(dataJudul);
-    // return dataJudul;
   }).catch((err) => {
     alert(`${err}`)
   });

@@ -17,9 +17,9 @@ const routes = [
       component: () => import('../views/Login.vue')
   },
   {
-      path: '/signin',
-      name: 'signin',
-      component: () => import('../views/Signin.vue')
+      path: '/register',
+      name: 'register',
+      component: () => import('../views/Register.vue')
   },
   {
       path: '/course/:id',
@@ -69,7 +69,7 @@ const routes = [
       component: () => import('../views/ForumDiscussion.vue')
   },
   {
-      path: '/course/:id/discussion/:id',
+      path: '/discussion/:id',
       name: 'discussion-detile',
       component: () => import('../views/DetileDiscussion.vue')
   },
@@ -82,9 +82,9 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     const isAuthenticated = JSON.parse(localStorage.getItem("authenticated"));
-    if (to.name !== "login" && to.name !== "signin" && !isAuthenticated) next({name: "login"});
+    if (to.name !== "login" && to.name !== "register" && !isAuthenticated) next({name: "login"});
     if (to.name === "login" && isAuthenticated) next({name: "home"});
-    if (to.name === "signin" && isAuthenticated) next({name: "home"});
+    if (to.name === "register" && isAuthenticated) next({name: "home"});
     else next();
 })
 

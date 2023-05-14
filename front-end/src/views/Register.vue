@@ -45,7 +45,6 @@
 import { reactive, ref } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
 import axios from 'axios';
-import api from '../utils/api';
 
 let dataUser = reactive({
     username: '',
@@ -64,9 +63,7 @@ function onRegister() {
         'http://localhost:3000/auth/register',
         dataUser
     ).then((result) => {
-        const token = result.data.token;
-        console.log(`AKSES TOKEN ${token}`);
-        api.putAccessToken(token);
+        alert('Berhasil mendaftar, silahkan login.');
         router.push({
             name: 'login'
         });

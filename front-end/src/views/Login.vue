@@ -23,7 +23,7 @@
                 </ol>
                 <button type="submit" @click="login" class="bg-primaryGreen text-white rounded p-1 my-6">MASUK</button>
             </form>
-            <span>Belum punya akun? <RouterLink :to="{ name: 'signin' }"><u class="hover:text-sky-600">Daftar</u></RouterLink></span>
+            <span>Belum punya akun? <RouterLink :to="{ name: 'register' }"><u class="hover:text-sky-600">Daftar</u></RouterLink></span>
         </div>
     </div>
 </template>
@@ -32,7 +32,6 @@
 import { RouterLink, useRouter } from 'vue-router';
 import { reactive, ref } from 'vue';
 import axios from 'axios';
-import api from '../utils/api';
 const validation = ref([]);
 const router = useRouter();
 
@@ -49,8 +48,8 @@ const login = () => {
         const token = result.data.token;
         localStorage.setItem("authenticated", "true");
         localStorage.setItem("username", transaction.username);
-        api.putAccessToken(token);
-
+        localStorage.setItem('accessToken', token);
+        alert('Login berhasil ')
         router.push({
             name: 'home'
         });
