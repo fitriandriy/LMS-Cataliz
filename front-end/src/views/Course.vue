@@ -4,7 +4,7 @@
         <!-- HEADER - THUMBNAIL, TITLE, DESC -->
         <div class="grid grid-cols-1 md:grid-cols-2">
             <!-- <img class="h-48 rounded-lg" src="/course.jpg" alt="course-image"> -->
-            <img class="h-48 rounded-lg" src="{{ course.thumbnail }}" alt="course-image">
+            <img class="h-48 rounded-lg" src="/course-images/course.jpg" alt="course-image">
             <div class="md:ml-3 lg:ml-0">
                 <header class="flex justify-between md:justify-start mt-3 md:mt-0">
                     <h1 class="font-bold text-lg md:text-2xl">{{ course.title }}</h1>
@@ -57,22 +57,22 @@
                         <!-- <P>SECTION ID {{ data._id }}</P> -->
                         <div v-if="userStore.$state.user.role === 'facilitator'" class="flex justify-start ml-5 my-2">
                             <router-link :to="{ name: 'create-lesson', params: { id: route.params.id } }">
-                                <button class="text-white px-4 py-[5px] rounded-lg bg-[#02BC7D] mr-2">ADD LESSON</button>
+                                <button @click="buttonClicked(data._id)" class="text-white px-4 py-[5px] rounded-lg bg-[#02BC7D] mr-2">ADD LESSON</button>
                             </router-link>
                             <router-link :to="{ name: 'create-task', params: { id: route.params.id } }">
-                                <button class="text-white px-4 py-[5px] rounded-lg bg-[#02BC7D]">ADD TASK</button>
+                                <button @click="buttonClicked(data._id)" class="text-white px-4 py-[5px] rounded-lg bg-[#02BC7D]">ADD TASK</button>
                             </router-link>
                         </div>
                         <!-- LESSON -->
-                        <!-- <div v-for="(lesson) in data.lesson" :key="lesson._id" class="flex my-4 px-5">
+                        <div v-for="(lesson) in data.lesson" :key="lesson._id" class="flex my-4 px-5">
                             <img class="w-[20px] h-[20px] mr-2" src="/video.png" alt="video icon">
                             <div>
                                 <a href="{{ lesson.video_link }}" class="text-blue-600 underline">{{ lesson.title }}</a>
                                 <p class="my-4 w-full">{{ lesson.description }}</p>
                             </div>
-                        </div> -->
+                        </div>
                         <!-- TASK -->
-                        <!-- <div v-for="(task) in data.task" :key="task._id" class="flex px-5">
+                        <div v-for="(task) in data.task" :key="task._id" class="flex px-5">
                             <img class="w-[20px] h-[20px] mr-2" src="/task.png" alt="task icon">
                             <div class="w-full">
                                 <a href="#" class="text-blue-600 underline">Task</a>
@@ -86,7 +86,7 @@
                                 </div>
                                 <p class="my-4">{{ task.description }}</p>
                             </div>
-                        </div> -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -108,7 +108,9 @@ import { ref, onMounted, reactive } from 'vue';
 import Navigation from '../components/Navigation.vue';
 import Vbutton from '../components/Button.vue';
 import { useUserStore } from '../states/user';
+import { useCourseStore } from '../states/course';
 const userStore = useUserStore();
+const courseStore = useCourseStore();
 
 const tab = ref([false, false]);
 
@@ -127,6 +129,10 @@ const handleRotate = (index: number) => {
 const handleToggle = (index: number) => {
   return tab.value[index] === true ? `max-height: 100%` : '';
 };
+
+const buttonClicked = (section_id) => {
+    courseStore.$state.course.section_id = section_id;
+}
 
 let course = reactive({
     title: '',
@@ -200,8 +206,8 @@ onMounted( async () => {
         `http://localhost:3000/courses/${route.params.id}/sections`,
         config)
     .then((result) => {
-        // course.section = result.data.sections.filter(check);
-        course.section = result.data.sections;
+        course.section = result.data.sections.filter(check);
+        // course.section = result.data.sections;
         // console.log(`THUMBNAIL ${course.section}`)
         console.log(`THUMBNAIL ${JSON.stringify(course.section)}`)
         // console.log(`THUMBNAIL ${JSON.stringify(data.course[0].section[0].lesson[0])}`)

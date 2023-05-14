@@ -10,13 +10,7 @@
         <input v-model="task.deadline" :type="'datetime-local'" class="mb-4 border-[1px] p-1 rounded-lg border-[#777777]" />
         <label>Deskripsi Tugas</label>
         <textarea v-model="task.description" class="mb-4 px-2 rounded-lg border border-[#777777] outline-none" rows="4" cols="50"></textarea>
-        <label for="section">Masukan ke dalam section:</label>
-        <div v-for="data in dataJudul">
-          <select v-model="task.section_id" class="p-1 rounded-lg border border-[#777777] outline-none" name="section" id="section">
-            <option :value="data._id">{{data.section_title}}</option>
-          </select>
-        </div>
-        <Vbutton :buttonNames="'ADD TASK'" class="h-9 font-medium md:w-[145px] mt-10" />
+        <Vbutton :buttonNames="'ADD TASK'" class="h-9 font-medium md:w-[145px]" />
       </form>
     </div>
   </div>
@@ -25,9 +19,11 @@
 <script setup lang="ts">
 import Navigation from '../components/Navigation.vue';
 import Vbutton from '../components/Button.vue';
-import { onMounted, reactive } from 'vue';
+import { onMounted, ref, reactive } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import axios from 'axios';
+import { useCourseStore } from '../states/course';
+const courseStore = useCourseStore();
 
 const router = useRouter();
 const route = useRoute();
@@ -41,35 +37,29 @@ let task = reactive({
         }
     ],
     description: '',
-    section_id: ''
+    section_id: courseStore.$state.course.section_id
 })
 
-let section = reactive([
-  {
-    _id: '',
-    course_id: '',
-    section_title: ''
-  }
-]);
+let section = ref([]);
 
 const token = localStorage.getItem("accessToken");
 const config = {
   headers: { Authorization: `Bearer ${token}` }
 };
 
+let dataJudul: string[] = [];
 onMounted( async () => {
-  let dataJudul: string[] = [];
   axios.get(
     `http://localhost:3000/courses/${route.params.id}/sections`,
     config
   ).then((result) => {
     section = result.data.sections;
-    // console.log(JSON.stringify(section));
-    result.data.sections.forEach((element: string) => {
-      dataJudul.push(element);
-    });
-    console.log(dataJudul);
-    return dataJudul;
+    console.log(`SECTION ${JSON.stringify(section)}`);
+    // result.data.sections.forEach((element: object) => {
+    //   section.push(element);
+    // });
+    // console.log(dataJudul);
+    // return dataJudul;
   }).catch((err) => {
     alert(`${err}`)
   });
